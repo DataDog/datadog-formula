@@ -7,8 +7,8 @@ What this is: a saltstack formula for Datadog.
 Available States
 ================
 
-``agent``
----------
+``datadog``
+-----------
 
 Installs and runs the Datadog agent.
 
