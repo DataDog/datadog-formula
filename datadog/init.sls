@@ -2,10 +2,15 @@ datadog-repo:
   pkgrepo:
     - managed
     - humanname: "Datadog Agent"
+    {% if grains['os'].lower() in ('ubuntu', 'debian') %}
     - name: deb http://apt.datadoghq.com/ unstable main
     - keyserver: keyserver.ubuntu.com
     - keyid: C7A7DA52
     - file: /etc/apt/sources.list.d/datadog.list
+    {% elif grains['os'].lower() == 'redhat' %}
+    - name: Datadog, Inc.
+    - baseurl: http://yum.datadoghq.com/rpm/
+    {% endif %}
  
 datadog-pkg:
   pkg.latest:
@@ -25,7 +30,7 @@ datadog-conf:
   file.sed:
     - name: /etc/dd-agent/datadog.conf
     - before: "api_key:.*"
-    - after: "api_key: {{ pillar['datadog']['api_agent_key'] }}"
+    - after: "api_key: {{pillar['datadog']['api_key']}}"
     - watch:
       - pkg.latest: datadog-pkg
     - require:
