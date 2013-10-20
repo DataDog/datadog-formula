@@ -1,4 +1,7 @@
 bin/*
 lib/*
 include/*
+etc/*
+share/*
+.vagrant/*
 .Python
