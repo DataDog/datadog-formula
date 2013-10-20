@@ -54,4 +54,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Set up salt-master and minion
   config.vm.provision "shell", path: "setup-salt.sh"
+  config.vm.hostname = "salt"
 end
