@@ -16,7 +16,7 @@ datadog-pkg:
   pkg.latest:
     - name: datadog-agent
     - require:
-      - pkgrepod: datadog-repo
+      - pkgrepo: datadog-repo
  
 datadog-example:
   cmd.run:
