@@ -3,7 +3,7 @@ datadog-repo:
     - managed
     - humanname: "Datadog Agent"
     {% if grains['os'].lower() in ('ubuntu', 'debian') %}
-    - name: deb http://apt.datadoghq.com/ unstable main
+    - name: deb http://apt.datadoghq.com/ stable main
     - keyserver: keyserver.ubuntu.com
     - keyid: C7A7DA52
     - file: /etc/apt/sources.list.d/datadog.list
