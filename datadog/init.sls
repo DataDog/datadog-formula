@@ -27,10 +27,11 @@ datadog-example:
       - pkg: datadog-pkg
  
 datadog-conf:
-  file.sed:
+  file.replace:
     - name: /etc/dd-agent/datadog.conf
-    - before: "api_key:.*"
-    - after: "api_key: {{ pillar['datadog']['api_key'] }}"
+    - pattern: "api_key:(.*)"
+    - repl: "api_key: {{ pillar['datadog']['api_key'] }}"
+    - count: 1
     - watch:
       - pkg: datadog-pkg
     - require:
