@@ -16,7 +16,7 @@ datadog-pkg:
   pkg.latest:
     - name: datadog-agent
     - require:
-      - pkgrepo.managed: datadog-repo
+      - pkgrepo: datadog-repo
  
 datadog-example:
   cmd.run:
@@ -24,17 +24,17 @@ datadog-example:
     # copy just if datadog.conf does not exists yet and the .example exists
     - onlyif: test ! -f /etc/dd-agent/datadog.conf -a -f /etc/dd-agent/datadog.conf.example
     - require:
-      - pkg.latest: datadog-pkg
+      - pkg: datadog-pkg
  
 datadog-conf:
   file.sed:
     - name: /etc/dd-agent/datadog.conf
     - before: "api_key:.*"
-    - after: "api_key: {{pillar['datadog']['api_key']}}"
+    - after: "api_key: {{ pillar['datadog']['api_key'] }}"
     - watch:
-      - pkg.latest: datadog-pkg
+      - pkg: datadog-pkg
     - require:
-      - cmd.run: datadog-example
+      - cmd: datadog-example
  
 datadog-agent-service:
   service:
