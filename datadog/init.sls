@@ -11,31 +11,31 @@ datadog-repo:
     - name: Datadog, Inc.
     - baseurl: http://yum.datadoghq.com/rpm/x86_64
     {% endif %}
- 
+
 datadog-pkg:
   pkg.latest:
     - name: datadog-agent
     - require:
-      - pkgrepo.managed: datadog-repo
- 
+      - pkgrepo: datadog-repo
+
 datadog-example:
   cmd.run:
     - name: cp /etc/dd-agent/datadog.conf.example /etc/dd-agent/datadog.conf
     # copy just if datadog.conf does not exists yet and the .example exists
     - onlyif: test ! -f /etc/dd-agent/datadog.conf -a -f /etc/dd-agent/datadog.conf.example
     - require:
-      - pkg.latest: datadog-pkg
- 
+      - pkg: datadog-pkg
+
 datadog-conf:
-  file.sed:
+  file.replace:
     - name: /etc/dd-agent/datadog.conf
-    - before: "api_key:.*"
-    - after: "api_key: {{pillar['datadog']['api_key']}}"
+    - pattern: "api_key:.*"
+    - repl: "api_key: {{ pillar['datadog']['api_key'] }}"
     - watch:
-      - pkg.latest: datadog-pkg
+      - pkg: datadog-pkg
     - require:
-      - cmd.run: datadog-example
- 
+      - cmd: datadog-example
+
 datadog-agent-service:
   service:
     - name: datadog-agent
