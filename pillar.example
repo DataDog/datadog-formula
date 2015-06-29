@@ -1,2 +1,4 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
 datadog:
   api_key: apikey_3
