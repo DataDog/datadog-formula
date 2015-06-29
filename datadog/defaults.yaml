@@ -1,0 +1,8 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+datadog:
+  pkg: datadog-agent
+  config: '/etc/dd-agent/datadog.conf'
+  service:
+    name: datadog
+  api_key: apikey_3
