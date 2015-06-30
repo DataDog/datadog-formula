@@ -7,7 +7,7 @@ datadog-repo:
     - keyserver: keyserver.ubuntu.com
     - keyid: C7A7DA52
     - file: /etc/apt/sources.list.d/datadog.list
-    {% elif grains['os'].lower() == 'redhat' %}
+    {% elif grains['os'].lower() in ('redhat', 'amazon') %}
     - name: Datadog, Inc.
     - baseurl: http://yum.datadoghq.com/rpm/x86_64
     {% endif %}
