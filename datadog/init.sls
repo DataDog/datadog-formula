@@ -10,6 +10,7 @@ datadog-repo:
     {% elif grains['os'].lower() in ('redhat', 'amazon') %}
     - name: Datadog
     - baseurl: http://yum.datadoghq.com/rpm/x86_64
+    - gpgcheck: 0
     {% endif %}
  
 datadog-pkg:
