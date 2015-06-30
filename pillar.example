@@ -1,2 +1,5 @@
 datadog:
   api_key: apikey_3
+  salt_compat: true
+  lookup:
+    - baseurl: http://yum.datadoghq.com/rpm/x86_64  
