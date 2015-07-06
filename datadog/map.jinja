@@ -1,0 +1,28 @@
+{% set lookup_table = {
+    'Debian': {
+        'repo_info': [
+            {'humanname': 'Datadog Agent'},
+            {'name': 'deb http://apt.datadoghq.com/ stable main'},
+            {'keyserver': 'keyserver.ubuntu.com'},
+            {'keyid': 'C7A7DA52'},
+            {'file': '/etc/apt/sources.list.d/datadog.list'},
+        ], 
+    },
+    'RedHat': {
+        'repo_info': [
+            {'humanname': 'Datadog Agent'},
+    	    {'name': 'Datadog'},
+    	    {'baseurl': 'http://yum.datadoghq.com/rpm/x86_64'},
+
+    	], 
+    },
+} %}
+
+# Adding this line to avoid a bug in Salt.  Not yet in a release branch  See: https://github.com/saltstack/salt/pull/21062
+{% if pillar['datadog']['salt_compat'] %}
+  {% do lookup_table['RedHat']['repo_info'].append({'exclude': '*noarch*'}) %}
+  {% do lookup_table['RedHat']['repo_info'].append({'gpgcheck': '0'}) %}
+{% endif %}
+
+{% set datadog_map = salt['grains.filter_by'](lookup_table,
+    merge=salt['pillar.get']('datadog:lookup')) %}
