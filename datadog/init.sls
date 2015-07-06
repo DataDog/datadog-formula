@@ -1,20 +1,11 @@
 
+{% from "datadog/map.jinja" import datadog_map with context %}
+
+
+
 datadog-repo:
-  pkgrepo:
-    - managed
-    - humanname: "Datadog Agent"
-    {% if grains['os'].lower() in ('ubuntu', 'debian') %}
-    - name: deb http://apt.datadoghq.com/ stable main
-    - keyserver: keyserver.ubuntu.com
-    - keyid: C7A7DA52
-    - file: /etc/apt/sources.list.d/datadog.list
-    {% elif grains['os'].lower() in ('redhat', 'amazon', 'centos', 'opensuse') %}
-    - name: Datadog
-    - baseurl: http://yum.datadoghq.com/rpm/x86_64
-    - gpgcheck: 0
-# Adding this line to avoid a bug in Salt.  Not yet in a release branch  See: https://github.com/saltstack/salt/pull/21062
-    - exclude: "*noarch*"
-    {% endif %}
+  pkgrepo.managed:
+    {{ datadog_map.repo_info | json }}
  
 datadog-pkg:
   pkg.latest:
