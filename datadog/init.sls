@@ -1,3 +1,9 @@
+{% if grains['os'].lower() in ('ubuntu', 'debian') %}
+datadog-apt-https:
+  pkg.installed:
+    - name: apt-transport-https
+{% endif %}
+
 datadog-repo:
   pkgrepo:
     - managed
@@ -7,6 +13,8 @@ datadog-repo:
     - keyserver: keyserver.ubuntu.com
     - keyid: C7A7DA52
     - file: /etc/apt/sources.list.d/datadog.list
+    - require:
+      - pkg: datadog-apt-https
     {% elif grains['os'].lower() == 'redhat' %}
     - name: Datadog, Inc.
     - baseurl: http://yum.datadoghq.com/rpm/x86_64
