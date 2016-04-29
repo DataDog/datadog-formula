@@ -4,10 +4,10 @@ datadog-apt-https:
     - name: apt-transport-https
 {% endif %}
 
-datadog-repo:
+datadog:
   pkgrepo:
     - managed
-    - humanname: "Datadog Agent"
+    - humanname: Datadog, Inc.
     {% if grains['os'].lower() in ('ubuntu', 'debian') %}
     - name: deb http://apt.datadoghq.com/ stable main
     - keyserver: keyserver.ubuntu.com
@@ -15,16 +15,19 @@ datadog-repo:
     - file: /etc/apt/sources.list.d/datadog.list
     - require:
       - pkg: datadog-apt-https
-    {% elif grains['os'].lower() == 'redhat' %}
-    - name: Datadog, Inc.
+    {% elif grains['os_family'] == 'RedHat' %}
+    - file: /etc/yum.repos.d/datadog.repo
     - baseurl: http://yum.datadoghq.com/rpm/x86_64
+    - enabled: 1
+    - gpgcheck: 1
+    - gpgkey: https://yum.datadoghq.com/DATADOG_RPM_KEY.public
     {% endif %}
- 
+
 datadog-pkg:
   pkg.latest:
     - name: datadog-agent
     - require:
-      - pkgrepo: datadog-repo
+      - pkgrepo: datadog
  
 datadog-example:
   cmd.run:
