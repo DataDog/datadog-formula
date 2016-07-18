@@ -5,8 +5,7 @@ datadog-apt-https:
 {% endif %}
 
 datadog-repo:
-  pkgrepo:
-    - managed
+  pkgrepo.managed:
     - humanname: "Datadog Agent"
     {% if grains['os'].lower() in ('ubuntu', 'debian') %}
     - name: deb http://apt.datadoghq.com/ stable main
@@ -15,14 +14,16 @@ datadog-repo:
     - file: /etc/apt/sources.list.d/datadog.list
     - require:
       - pkg: datadog-apt-https
-    {% elif grains['os'].lower() == 'redhat' %}
-    - name: Datadog, Inc.
+    {% elif grains['os'].lower() in ('redhat', 'centos', 'amazon') %}
+    - name: datadog-repo
     - baseurl: http://yum.datadoghq.com/rpm/x86_64
+    - gpgcheck: '0'
     {% endif %}
  
 datadog-pkg:
   pkg.latest:
     - name: datadog-agent
+    - refresh: True
     - require:
       - pkgrepo: datadog-repo
  
