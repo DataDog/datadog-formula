@@ -15,7 +15,7 @@ datadog-repo:
     - require:
       - pkg: datadog-apt-https
     {% elif grains['os_family'].lower() == 'redhat' %}
-    - name: datadog-repo
+    - name: datadog-agent
     - baseurl: https://yum.datadoghq.com/rpm/x86_64
     - gpgcheck: '0'
     {% endif %}
