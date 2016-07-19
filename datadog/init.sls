@@ -1,4 +1,4 @@
-{% if grains['os_family'].lower() in 'debian' %}
+{% if grains['os_family'].lower() == 'debian' %}
 datadog-apt-https:
   pkg.installed:
     - name: apt-transport-https
