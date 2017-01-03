@@ -55,3 +55,4 @@ datadog-agent-service:
     - enable: True
     - watch:
       - pkg: datadog-agent
+
