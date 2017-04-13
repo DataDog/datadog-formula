@@ -10,6 +10,10 @@ Available States
 ``datadog``
 -----------
 
-Installs and runs the Datadog agent.
+Installs, configures, and runs the Datadog agent.
 
-This formula uses pillar data to store the Datadog API key for your account (see ``pillar.example``).
+This formula uses the Salt pillar to configure Datadog checks. Since both
+Salt and Datadog use YAML for configuration, it's simple to essentially copy
+pillar data directly into Datadog check configuration files. Use the same
+syntax specified in any <check>.yaml.example. Your current configs can be 
+copied verbatim into the Salt pillar (see ``pillar.example``).
