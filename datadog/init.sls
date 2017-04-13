@@ -37,6 +37,7 @@ datadog-example:
     - require:
       - pkg: datadog-pkg
  
+{% if pillar.datadog.api_key is defined %}
 datadog-conf:
   file.replace:
     - name: /etc/dd-agent/datadog.conf
@@ -47,6 +48,31 @@ datadog-conf:
       - pkg: datadog-pkg
     - require:
       - cmd: datadog-example
+{% endif %} 
+
+{% for check_type in pillar.datadog %}
+  {% if check_type == 'config' %}
+datadog_conf_installed:
+  file.managed:
+    - name: /etc/dd-agent/datadog.conf
+    - source: salt://datadog/files/datadog.conf.jinja
+    - user: dd-agent
+    - group: root
+    - mode: 600
+    - template: jinja
+  {% else %}
+datadog_{{ check_type }}_yaml_installed:
+  file.managed:
+    - name: /etc/dd-agent/conf.d/{{ check_type }}.yaml
+    - source: salt://datadog/files/check_type.yaml.jinja
+    - user: dd-agent
+    - group: root
+    - mode: 600
+    - template: jinja
+    - context:
+        check_type: {{ check_type }}
+  {% endif %}
+{% endfor %}
  
 datadog-agent-service:
   service:
