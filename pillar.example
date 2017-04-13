@@ -2,6 +2,8 @@ datadog:
   config:
     api_key: apikey_3
   process:
+    init_config:
+      procfs_path: /proc
     instances:
       - name: ssh
         search_string: ['sshd']
