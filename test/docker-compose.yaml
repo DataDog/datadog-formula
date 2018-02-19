@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  masterless:
+    image: dd-salt-masterless
+    build:
+      context: .
+    volumes:
+      - ./minion.d:/etc/salt/minion.d
+      - ./pillar:/srv/pillar
+      - ./base:/srv/salt/base
+      - ../datadog:/srv/salt/base/datadog

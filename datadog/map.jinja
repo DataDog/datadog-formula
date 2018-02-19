@@ -1,0 +1,21 @@
+# -*- coding: utf-8 -*-
+
+{## Start with  defaults from defaults.sls ##}
+{% import_yaml 'datadog/defaults.yaml' as default_settings %}
+
+{##
+Setup variable using grains['os_family'] based logic, only add key:values here
+that differ from whats in defaults.yaml
+##}
+{% set os_family_map = salt['grains.filter_by']({
+      'Debian': {},
+      'RedHat': {},
+    },
+    grain="os_family")
+%}
+
+{## Merge the flavor_map to the default settings ##}
+{% do default_settings.datadog.update(os_family_map) %}
+
+{## Merge in datadog pillar ##}
+{% set datadog = salt['pillar.get']('datadog', default=default_settings.datadog, merge=True) %}
