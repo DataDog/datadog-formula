@@ -31,12 +31,16 @@ the `pillar_merge_lists` option must be set to `True` in the Salt master config
 (or the salt minion config if running masterless) (see
 https://docs.saltstack.com/en/latest/ref/configuration/master.html#pillar-merge-lists).
 
-
 ``datadog.service``
 ------------------
 
 Runs the Datadog Agent service, watching for changes to the config files for the
 Agent itself and the checks.
+
+``datadog.service``
+------------------
+
+Stops the service and uninstall Datadog Agent.
 
 Development
 ===========
