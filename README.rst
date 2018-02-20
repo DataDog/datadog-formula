@@ -24,14 +24,28 @@ verbatim into the Salt pillar (see ``pillar.example``).
 **NOTE:** In order to split a single check type's configuration among multiple
 pillar files (eg. to configure different check instances on different machines),
 the `pillar_merge_lists` option must be set to `True` in the Salt master config
-(or the salt minion config if running masterless) (see 
+(or the salt minion config if running masterless) (see
 https://docs.saltstack.com/en/latest/ref/configuration/master.html#pillar-merge-lists).
+
+Development
+===========
+
+To ease the development of the formula, you can use Docker and Docker Compose with
+the compose file in `test/docker-compose.yaml`:
+
+.. code block::
+
+    # cd test/
+    # docker-compose run masterless /bin/bash
+    $ salt-call --local state.highstate -l debug
+
 
 Testing
 =========
 
-A proper integration test suite is still a Work in Progress, in the meantime a
-Docker Compose file is provided to easily check out the formula in action.
+A proper integration test suite is still a Work in Progress, in the meantime you
+can use the Docker Compose file provided in the `test` directory to easily check
+out the formula in action.
 
 Requirements
 ------------
@@ -46,3 +60,5 @@ Run the formula
 
     # cd test/
     # docker-compose up
+
+You should be able to see from the logs if all the states completed successfully.

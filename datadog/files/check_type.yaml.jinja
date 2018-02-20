@@ -1,5 +1,0 @@
-{% if pillar.datadog[check_type].init_config is not defined -%}
-init_config:
-
-{% endif -%}
-{{ pillar.datadog[check_type] | yaml(False) }}

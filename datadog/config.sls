@@ -10,6 +10,7 @@ datadog-example:
     - require:
       - pkg: datadog-pkg
 
+{% if datadog.api_key is defined %}
 datadog-conf:
   file.replace:
     - name: {{ datadog.config }}
@@ -20,3 +21,17 @@ datadog-conf:
       - pkg: datadog-pkg
     - require:
       - cmd: datadog-example
+{% endif %}
+
+{% for check_name in datadog.checks %}
+datadog_{{ check_name }}_yaml_installed:
+  file.managed:
+    - name: {{ datadog.checks_config }}/{{ check_name }}.yaml
+    - source: salt://datadog/files/conf.yaml.jinja
+    - user: dd-agent
+    - group: root
+    - mode: 600
+    - template: jinja
+    - context:
+        check_name: {{ check_name }}
+{% endfor %}

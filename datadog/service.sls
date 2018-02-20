@@ -9,4 +9,5 @@ datadog-agent-service:
     - enable: True
     - watch:
       - pkg: datadog-agent
-      - file: datadog-conf
+      - file: {{ datadog.config }}
+      - file: {{ datadog.checks_config }}/*
