@@ -1,8 +1,8 @@
 Datadog Formula
 ===============
 
-SaltStack Formula to install the Datadog Agent. See the full
-`Salt Formulas installation and usage instructions <http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+SaltStack Formula to install the Datadog Agent and the Agent based integrations,
+also called Checks. See the full `Salt Formulas installation and usage instructions <http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
 
 Available States
 ================
@@ -13,19 +13,30 @@ Available States
 ``datadog``
 -----------
 
-Installs, configures, and runs the Datadog agent.
+Installs, configures and starts the Datadog Agent service.
 
-This formula uses the Salt pillar to configure Datadog and Datadog checks. Since
-both Salt and Datadog use YAML for configuration, it's simple to essentially copy
-pillar data directly into Datadog check configuration files. Use the same syntax
-specified in any <check>.yaml.example. Your current configs can be copied
-verbatim into the Salt pillar (see ``pillar.example``).
+``datadog.install``
+------------------
 
-**NOTE:** In order to split a single check type's configuration among multiple
+Configure the right repo and installs the Agent.
+
+``datadog.config``
+------------------
+
+Configures Agent and Integrations using pillar data. See `pillar.example`.
+
+**NOTE:** in order to split a single check type's configuration among multiple
 pillar files (eg. to configure different check instances on different machines),
 the `pillar_merge_lists` option must be set to `True` in the Salt master config
 (or the salt minion config if running masterless) (see
 https://docs.saltstack.com/en/latest/ref/configuration/master.html#pillar-merge-lists).
+
+
+``datadog.service``
+------------------
+
+Runs the Datadog Agent service, watching for changes to the config files for the
+Agent itself and the checks.
 
 Development
 ===========
