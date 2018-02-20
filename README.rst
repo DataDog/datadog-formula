@@ -33,7 +33,7 @@ Development
 To ease the development of the formula, you can use Docker and Docker Compose with
 the compose file in `test/docker-compose.yaml`:
 
-.. code block::
+.. code-block::
 
     # cd test/
     # docker-compose run masterless /bin/bash
