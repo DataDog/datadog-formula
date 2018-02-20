@@ -37,7 +37,7 @@ https://docs.saltstack.com/en/latest/ref/configuration/master.html#pillar-merge-
 Runs the Datadog Agent service, watching for changes to the config files for the
 Agent itself and the checks.
 
-``datadog.service``
+``datadog.uninstall``
 ------------------
 
 Stops the service and uninstall Datadog Agent.
