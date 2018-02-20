@@ -25,8 +25,8 @@ Docker Compose file is provided to easily check out the formula in action.
 Requirements
 ------------
 
- * Docker
- * Docker Compose
+* Docker
+* Docker Compose
 
 Run the formula
 ---------------
