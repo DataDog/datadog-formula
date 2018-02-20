@@ -1,2 +1,14 @@
 datadog:
-  api_key: apikey_3
+  config:
+    api_key: apikey_3
+  process:
+    init_config:
+      procfs_path: /proc
+    instances:
+      - name: ssh
+        search_string: ['sshd']
+  tcp_check:
+    instances:
+      - host: 127.0.0.1
+        name: sshd
+        port: 22
