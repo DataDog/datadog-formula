@@ -10,4 +10,6 @@ datadog-agent-service:
     - watch:
       - pkg: datadog-agent
       - file: {{ datadog.config }}
+{% if datadog.checks is defined %}
       - file: {{ datadog.checks_config }}/*
+{% endif %}
