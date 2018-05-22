@@ -7,3 +7,4 @@ datadog:
   service:
     name: datadog-agent
   api_key: aaaaaaaabbbbbbbbccccccccdddddddd
+  agent_version: 5
