@@ -6,5 +6,6 @@ datadog:
   checks_config: '/etc/dd-agent/conf.d'
   service:
     name: datadog-agent
-  api_key: aaaaaaaabbbbbbbbccccccccdddddddd
   agent_version: 5
+  datadog:
+    api_key: aaaaaaaabbbbbbbbccccccccdddddddd

@@ -2,6 +2,8 @@
 
 {% from "datadog/map.jinja" import datadog with context %}
 
+{% if datadog['agent_version'] == 5 %}
+
 datadog-example:
   cmd.run:
     - name: cp /etc/dd-agent/datadog.conf.example {{ datadog.config }}
@@ -10,7 +12,7 @@ datadog-example:
     - require:
       - pkg: datadog-pkg
 
-{% if datadog.api_key is defined %}
+{% if datadog.datadog.api_key is defined %}
 datadog-conf:
   file.replace:
     - name: {{ datadog.config }}
@@ -21,6 +23,16 @@ datadog-conf:
       - pkg: datadog-pkg
     - require:
       - cmd: datadog-example
+{% endif %}
+{% elif datadog['agent_version'] == 6 %}
+datadog-conf:
+  file.managed:
+    - name: {{ datadog.config }}
+    - source: salt://datadog/file/datadog.yaml.jinja
+    - user: dd-agent
+    - group: root
+    - mode: 600
+    - template: jinja
 {% endif %}
 
 {% for check_name in datadog.checks %}
