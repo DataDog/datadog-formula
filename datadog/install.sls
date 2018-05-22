@@ -12,9 +12,9 @@ datadog-repo:
   pkgrepo.managed:
     - humanname: "Datadog, Inc."
     {% if grains['os_family'].lower() == 'debian' %}
-      {% if pillar['datadog']['agent_version'] == 5 %}
+      {% if datadog['agent_version'] == 5 %}
     - name: deb https://apt.datadoghq.com/ stable main
-      {% elif pillar['datadog']['agent_version'] == 6 %}
+      {% elif datadog['agent_version'] == 6 %}
     - name: deb https://apt.datadoghq.com/ stable 6
       {% endif %}
     - keyserver: keyserver.ubuntu.com
@@ -24,9 +24,9 @@ datadog-repo:
       - pkg: datadog-apt-https
     {% elif grains['os_family'].lower() == 'redhat' %}
     - name: datadog
-      {% if pillar['datadog']['agent_version'] == 5 %}
+      {% if datadog['agent_version'] == 5 %}
     - baseurl: https://yum.datadoghq.com/rpm/{{ grains['cpuarch'] }}
-      {% elif pillar['datadog']['agent_version'] == 6 %}
+      {% elif datadog['agent_version'] == 6 %}
     - baseurl: https://yum.datadoghq.com/stable/6/{{ grains['cpuarch'] }}
       {% endif %}
     - gpgcheck: '1'
