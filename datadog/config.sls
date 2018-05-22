@@ -33,6 +33,8 @@ datadog-conf:
     - group: root
     - mode: 600
     - template: jinja
+    - watch:
+      - pkg: datadog-pkg
 {% endif %}
 
 {% for check_name in datadog.checks %}
