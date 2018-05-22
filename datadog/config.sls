@@ -28,7 +28,7 @@ datadog-conf:
 datadog-conf:
   file.managed:
     - name: {{ datadog.config }}
-    - source: salt://datadog/file/datadog.yaml.jinja
+    - source: salt://datadog/files/datadog.yaml.jinja
     - user: dd-agent
     - group: root
     - mode: 600
