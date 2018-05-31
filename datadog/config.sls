@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 {% from "datadog/map.jinja" import datadog with context %}
 
 datadog-example:
