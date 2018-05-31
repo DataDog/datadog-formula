@@ -25,8 +25,10 @@ datadog-api_key-conf:
 datadog-hostname-conf:
   file.replace:
     - name: {{ datadog.config }}
-    - pattern: "{{ '(#\s)?hostname:(.*)' | regex_escape }}"
-    - repl: "hostname: {{ datadog.hostname }}"
+    - pattern: |
+      (\#\s)?hostname:(.*)
+    - repl: |
+      hostname: {{ datadog.hostname }}
     - count: 1
     - watch:
       - pkg: datadog-pkg
@@ -38,7 +40,8 @@ datadog-hostname-conf:
 datadog-tags-conf:
   file.replace:
     - name: {{ datadog.config }}
-    - pattern: "{{ '(#\s)?tags:(.*)' | regex_escape }}"
+    - pattern: |
+      (\#\s)?tags:(.*)
     - repl: "tags: {{ datadog.tags|join(', ') }}"
     - count: 1
     - watch:
