@@ -20,8 +20,6 @@ datadog-api_key-conf:
     - count: 1
     - watch:
       - pkg: datadog-pkg
-    - require:
-      - file: {{ datadog.config }}
 
 datadog-hostname-conf:
   file.replace:
@@ -38,8 +36,6 @@ datadog-hostname-conf:
     - count: 1
     - watch:
       - pkg: datadog-pkg
-    - require:
-      - file: {{ datadog.config }}
 
 datadog-tags-conf:
   file.replace:
@@ -56,8 +52,6 @@ datadog-tags-conf:
     - count: 1
     - watch:
       - pkg: datadog-pkg
-    - require:
-      - file: {{ datadog.config }}
 
 {% for check_name in datadog.checks %}
 datadog_{{ check_name }}_yaml_installed:
