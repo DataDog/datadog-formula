@@ -26,7 +26,7 @@ datadog-hostname-conf:
   file.replace:
     - name: {{ datadog.config }}
     - pattern: |
-      (\#\s)?hostname\:(.*)
+        (\#\s)?hostname\:(.*)
     - repl: 'hostname\: {{ datadog.hostname }}'
     - count: 1
     - watch:
@@ -40,7 +40,7 @@ datadog-tags-conf:
   file.replace:
     - name: {{ datadog.config }}
     - pattern: |
-      (\#\s)?tags\:(.*)
+        (\#\s)?tags\:(.*)
     - repl: 'tags\: {{ datadog.tags|join(", ") }}'
     - count: 1
     - watch:
