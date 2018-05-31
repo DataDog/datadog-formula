@@ -25,7 +25,7 @@ datadog-api_key-conf:
 datadog-api_key-conf:
   file.replace:
     - name: {{ datadog.config }}
-    - pattern: "^(\#\s)?hostname:(.*)"
+    - pattern: "^(#\s)?hostname:(.*)"
     - repl: "hostname: {{ datadog.hostname }}"
     - count: 1
     - watch:
