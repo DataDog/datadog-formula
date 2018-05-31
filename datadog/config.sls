@@ -9,7 +9,7 @@ datadog-example:
       - pkg: datadog-pkg
 
 {% if datadog.api_key is defined %}
-datadog-conf:
+datadog-api_key-conf:
   file.replace:
     - name: {{ datadog.config }}
     - pattern: "api_key:(.*)"
@@ -17,8 +17,34 @@ datadog-conf:
     - count: 1
     - watch:
       - pkg: datadog-pkg
-    - require:
-      - cmd: datadog-example
+    # - require:
+    #   - cmd: datadog-example
+{% endif %}
+
+{% if datadog.hostname is defined %}
+datadog-api_key-conf:
+  file.replace:
+    - name: {{ datadog.config }}
+    - pattern: "^(\#\s)?hostname:(.*)"
+    - repl: "hostname: {{ datadog.hostname }}"
+    - count: 1
+    - watch:
+      - pkg: datadog-pkg
+    # - require:
+    #   - cmd: datadog-example
+{% endif %}
+
+{% if datadog.tags %}
+datadog-api_key-conf:
+  file.replace:
+    - name: {{ datadog.config }}
+    - pattern: "^(\#\s)?tags:(.*)"
+    - repl: "tags: {{ datadog.tags|join(', ') }}"
+    - count: 1
+    - watch:
+      - pkg: datadog-pkg
+    # - require:
+    #   - cmd: datadog-example
 {% endif %}
 
 {% for check_name in datadog.checks %}
