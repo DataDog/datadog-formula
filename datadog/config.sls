@@ -22,7 +22,7 @@ datadog-api_key-conf:
 {% endif %}
 
 {% if datadog.hostname is defined %}
-datadog-api_key-conf:
+datadog-hostname-conf:
   file.replace:
     - name: {{ datadog.config }}
     - pattern: "^(#\s)?hostname:(.*)| regex_escape"
@@ -35,7 +35,7 @@ datadog-api_key-conf:
 {% endif %}
 
 {% if datadog.tags %}
-datadog-api_key-conf:
+datadog-tags-conf:
   file.replace:
     - name: {{ datadog.config }}
     - pattern: "^(\#\s)?tags:(.*)| regex_escape"
