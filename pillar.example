@@ -1,5 +1,9 @@
 datadog:
   api_key: aaaaaaaabbbbbbbbccccccccdddddddd
+  hostname: {{ grains.id }}  # or done include to have it automatically be calculated
+  tags:
+    - env:staging
+    - team:sunny
   checks:
     process:
       init_config:
