@@ -6,4 +6,7 @@ datadog:
   checks_config: '/etc/dd-agent/conf.d'
   service:
     name: datadog-agent
+  docker:
+    image: datadog/agent
+    tag: latest
   api_key: aaaaaaaabbbbbbbbccccccccdddddddd

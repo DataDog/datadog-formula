@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 {% from "datadog/map.jinja" import datadog with context %}
 
 datadog-example:
@@ -10,18 +8,50 @@ datadog-example:
     - require:
       - pkg: datadog-pkg
 
-{% if datadog.api_key is defined %}
-datadog-conf:
+datadog-api_key-conf:
   file.replace:
     - name: {{ datadog.config }}
     - pattern: "api_key:(.*)"
+{% if datadog.api_key is defined %}
     - repl: "api_key: {{ datadog.api_key }}"
+{% else %}
+    - repl: "# api_key: "
+{% endif %}
     - count: 1
     - watch:
       - pkg: datadog-pkg
-    - require:
-      - cmd: datadog-example
+
+datadog-hostname-conf:
+  file.replace:
+    - name: {{ datadog.config }}
+    - pattern: |
+        (\#\s)?hostname\:(.*)
+{% if datadog.hostname is defined %}
+    - repl: |
+        hostname: {{ datadog.hostname }}
+{% else %}
+    - repl: |
+        "# hostname: none"
 {% endif %}
+    - count: 1
+    - watch:
+      - pkg: datadog-pkg
+
+datadog-tags-conf:
+  file.replace:
+    - name: {{ datadog.config }}
+    - pattern: |
+        (\#\s)?tags\:(.*)
+{% if datadog.tags %}
+    - repl: |
+        tags: {{ datadog.tags|join(", ") }}
+{% else %}
+    - repl: |
+        "# tags: none"
+{% endif %}
+    - count: 1
+    - watch:
+      - pkg: datadog-pkg
 
 {% if datadog.checks is defined %}
 {% for check_name in datadog.checks %}
