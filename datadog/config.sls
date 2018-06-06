@@ -53,6 +53,7 @@ datadog-tags-conf:
     - watch:
       - pkg: datadog-pkg
 
+{% if datadog.checks is defined %}
 {% for check_name in datadog.checks %}
 datadog_{{ check_name }}_yaml_installed:
   file.managed:
@@ -65,3 +66,4 @@ datadog_{{ check_name }}_yaml_installed:
     - context:
         check_name: {{ check_name }}
 {% endfor %}
+{% endif %}
