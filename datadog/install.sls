@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-
-{% from "datadog/map.jinja" import datadog with context %}
+{% from "datadog/map.jinja" import datadog_settings with context %}
 
 {% if grains['os_family'].lower() == 'debian' %}
 datadog-apt-https:
@@ -28,7 +26,7 @@ datadog-repo:
 
 datadog-pkg:
   pkg.latest:
-    - name: {{ datadog.pkg }}
+    - name: {{ datadog_settings.pkg_name }}
     - refresh: True
     - require:
       - pkgrepo: datadog-repo

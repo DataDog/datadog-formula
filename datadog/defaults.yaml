@@ -1,9 +1,0 @@
-# -*- coding: utf-8 -*-
-
-datadog:
-  pkg: datadog-agent
-  config: '/etc/dd-agent/datadog.conf'
-  checks_config: '/etc/dd-agent/conf.d'
-  service:
-    name: datadog-agent
-  api_key: aaaaaaaabbbbbbbbccccccccdddddddd

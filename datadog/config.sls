@@ -1,21 +1,21 @@
-# -*- coding: utf-8 -*-
-
-{% from "datadog/map.jinja" import datadog with context %}
+{% from "datadog/map.jinja" import datadog_settings with context %}
+{% set config_file_path = '%s/%s'|format(datadog_settings.config_folder, datadog_settings.config_file) -%}
+{% set example_file_path = '%s.example'|format(config_file_path) -%}
 
 datadog-example:
   cmd.run:
-    - name: cp /etc/dd-agent/datadog.conf.example {{ datadog.config }}
-    # copy just if datadog.conf does not exists yet and the .example exists
-    - onlyif: test ! -f {{ datadog.config }} -a -f /etc/dd-agent/datadog.conf.example
+    - name: cp {{ example_file_path }} {{ config_file_path}}
+    # copy only if the config file does not exists yet but the .example does
+    - onlyif: test ! -f {{ datadog_settings.config_folder }}/{{ datadog_settings.config_file }} -a -f /etc/dd-agent/datadog.conf.example
     - require:
       - pkg: datadog-pkg
 
-{% if datadog.api_key is defined %}
+{% if datadog_settings.api_key is defined %}
 datadog-conf:
   file.replace:
-    - name: {{ datadog.config }}
+    - name: {{ config_file_path }}
     - pattern: "api_key:(.*)"
-    - repl: "api_key: {{ datadog.api_key }}"
+    - repl: "api_key: {{ datadog_settings.api_key }}"
     - count: 1
     - watch:
       - pkg: datadog-pkg
@@ -23,11 +23,11 @@ datadog-conf:
       - cmd: datadog-example
 {% endif %}
 
-{% if datadog.checks is defined %}
-{% for check_name in datadog.checks %}
+{% if datadog_settings.checks is defined %}
+{% for check_name in datadog_settings.checks %}
 datadog_{{ check_name }}_yaml_installed:
   file.managed:
-    - name: {{ datadog.checks_config }}/{{ check_name }}.yaml
+    - name: {{ datadog_settings.checks_confd }}/{{ check_name }}.yaml
     - source: salt://datadog/files/conf.yaml.jinja
     - user: dd-agent
     - group: root
