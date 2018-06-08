@@ -9,6 +9,6 @@ datadog-agent-service:
     - watch:
       - pkg: {{ datadog_settings.pkg_name }}
       - file: {{ config_file_path }}
-{% if datadog_settings.checks is defined %}
+{%- if datadog_settings.checks is defined %}
       - file: {{ datadog_settings.checks_confd }}/*
 {% endif %}
