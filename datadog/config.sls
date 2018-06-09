@@ -6,6 +6,7 @@ datadog-example:
   file.copy:
     - name: {{ config_file_path }}
     - source: {{ example_file_path }}
+    - onlyif: test -f {{ example_file_path }}
     - require:
       - pkg: datadog-pkg
 
@@ -16,6 +17,7 @@ datadog-conf:
     - pattern: "api_key:(.*)"
     - repl: "api_key: {{ datadog_settings.api_key }}"
     - count: 1
+    - onlyif: test -f {{ config_file_path }}
     - watch:
       - pkg: datadog-pkg
 {% endif %}
