@@ -2,6 +2,27 @@
 {% set config_file_path = '%s/%s'|format(datadog_settings.config_folder, datadog_settings.config_file) -%}
 {% set example_file_path = '%s.example'|format(config_file_path) -%}
 
+
+datadog-config-file:
+  file.exists:
+    - name: {{ config_file_path }}
+    - require:
+      - pkg: datadog-pkg
+
+datadog-example-file:
+  file.exists:
+    - name: {{ example_file_path }}
+    - require:
+      - pkg: datadog-pkg
+
+datadog-copy-example:
+  file.copy:
+    - name: {{ config_file_path }}
+    - source: {{ example_file_path }}
+    - require:
+        - file: datadog-config-file
+        - file: datadog-example-file
+
 datadog-example:
   cmd.run:
     - name: cp {{ example_file_path }} {{ config_file_path }}
