@@ -20,10 +20,11 @@ datadog-copy-example:
     - name: {{ config_file_path }}
     - source: {{ example_file_path }}
     - require:
-        - file: datadog-config-file
         - file: datadog-example-file
+    - onfail:
+        - file: datadog-config-file
 
-{% if datadog_settings.api_key is defined %}
+{%- if datadog_settings.api_key is defined %}
 datadog-conf:
   file.replace:
     - name: {{ config_file_path }}
