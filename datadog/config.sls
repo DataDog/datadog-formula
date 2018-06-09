@@ -23,14 +23,6 @@ datadog-copy-example:
         - file: datadog-config-file
         - file: datadog-example-file
 
-datadog-example:
-  cmd.run:
-    - name: cp {{ example_file_path }} {{ config_file_path }}
-    - require:
-      - pkg: datadog-pkg
-    # copy only if datadog.conf does not exists yet and the .example exists
-    - onlyif: test ! -f {{ config_file_path }} -a -f {{ example_file_path }}
-
 {% if datadog_settings.api_key is defined %}
 datadog-conf:
   file.replace:
