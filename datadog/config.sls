@@ -2,29 +2,36 @@
 {% set config_file_path = '%s/%s'|format(datadog_settings.config_folder, datadog_settings.config_file) -%}
 {% set example_file_path = '%s.example'|format(config_file_path) -%}
 
+datadog-config-file absent:
+  file.absent:
+    - name: {{ config_file_path }}
+    - require:
+      - pkg: datadog-pkg
+    - require_in:
+      - file: datadog-copy-example
 
-datadog-config-file:
+datadog-config-file exists:
   file.exists:
     - name: {{ config_file_path }}
     - require:
       - pkg: datadog-pkg
+    - require_in:
+      - file: datadog-conf
 
 datadog-example-file:
   file.exists:
     - name: {{ example_file_path }}
-    - require:
-      - pkg: datadog-pkg
+    - require_in:
+      - file: datadog-copy-example
 
 datadog-copy-example:
   file.copy:
     - name: {{ config_file_path }}
     - source: {{ example_file_path }}
     - require:
-        - file: datadog-example-file
-    - onfail:
-        - file: datadog-config-file
+      - pkg: datadog-pkg
 
-{%- if datadog_settings.api_key is defined %}
+{% if datadog_settings.api_key is defined %}
 datadog-conf:
   file.replace:
     - name: {{ config_file_path }}
