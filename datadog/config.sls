@@ -2,8 +2,8 @@
 {% set config_file_path = '%s/%s'|format(datadog_settings.config_folder, datadog_settings.config_file) -%}
 {% set example_file_path = '%s.example'|format(config_file_path) -%}
 
-datadog-config-file absent:
-  file.absent:
+datadog-config-file missing:
+  file.missing:
     - name: {{ config_file_path }}
     - require:
       - pkg: datadog-pkg
