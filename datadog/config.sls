@@ -6,6 +6,7 @@ datadog-example:
   file.copy:
     - name: {{ config_file_path }}
     - source: {{ example_file_path }}
+    # file.copy will not overwrite a named file, so we only need to check if the example config file exists
     - onlyif: test -f {{ example_file_path }}
     - require:
       - pkg: datadog-pkg
