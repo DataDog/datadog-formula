@@ -3,12 +3,13 @@
 {% set example_file_path = '%s.example'|format(config_file_path) -%}
 
 datadog-example:
-  cmd.run:
-    - name: cp {{ example_file_path }} {{ config_file_path }}
+  file.copy:
+    - name: {{ config_file_path }}
+    - source: {{ example_file_path }}
+    # file.copy will not overwrite a named file, so we only need to check if the example config file exists
+    - onlyif: test -f {{ example_file_path }}
     - require:
       - pkg: datadog-pkg
-    # copy only if datadog.conf does not exists yet and the .example exists
-    - onlyif: test ! -f {{ config_file_path }} -a -f {{ example_file_path }}
 
 {% if datadog_settings.api_key is defined %}
 datadog-conf:
@@ -17,6 +18,7 @@ datadog-conf:
     - pattern: "api_key:(.*)"
     - repl: "api_key: {{ datadog_settings.api_key }}"
     - count: 1
+    - onlyif: test -f {{ config_file_path }}
     - watch:
       - pkg: datadog-pkg
 {% endif %}
