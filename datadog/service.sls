@@ -2,9 +2,8 @@
 {% set config_file_path = '%s/%s'|format(datadog_settings.config_folder, datadog_settings.config_file) -%}
 
 datadog-agent-service:
-  service:
+  service.running:
     - name: {{ datadog_settings.service_name }}
-    - running
     - enable: True
     - watch:
       - pkg: {{ datadog_settings.pkg_name }}

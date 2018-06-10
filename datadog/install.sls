@@ -9,14 +9,14 @@ datadog-apt-https:
 datadog-repo:
   pkgrepo.managed:
     - humanname: "Datadog, Inc."
-    {% if grains['os_family'].lower() == 'debian' %}
+    {%- if grains['os_family'].lower() == 'debian' %}
     - name: deb https://apt.datadoghq.com/ stable main
     - keyserver: keyserver.ubuntu.com
     - keyid: 382E94DE
     - file: /etc/apt/sources.list.d/datadog.list
     - require:
       - pkg: datadog-apt-https
-    {% elif grains['os_family'].lower() == 'redhat' %}
+    {%- elif grains['os_family'].lower() == 'redhat' %}
     - name: datadog
     - baseurl: https://yum.datadoghq.com/rpm/{{ grains['cpuarch'] }}
     - gpgcheck: '1'
