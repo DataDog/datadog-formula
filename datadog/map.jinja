@@ -8,16 +8,17 @@
 {% set default_settings = {
     'datadog': {
         'pkg_name': 'datadog-agent',
-        'config_folder': '/etc/dd-agent',
-        'config_file': 'datadog.conf',
-        'checks_confd': '/etc/dd-agent/conf.d',
+        'config_folder': '/etc/datadog-agent',
+        'config_file': 'datadog.yaml',
+        'checks_confd': '/etc/datadog-agent/conf.d',
         'service_name': 'datadog-agent',
         'api_key': 'aaaaaaaabbbbbbbbccccccccdddddddd',
+        'agent_version': '6.2.1',
     }
 }%}
 
-{## Merge os_family_map into the default settings ##}
+{# Merge os_family_map into the default settings #}
 {% do default_settings.datadog.update(os_family_map) %}
 
-{## Merge in datadog pillar ##}
+{# Merge in datadog pillar #}
 {% set datadog_settings = salt['pillar.get']('datadog', default=default_settings.datadog, merge=True) %}

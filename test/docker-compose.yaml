@@ -5,6 +5,7 @@ services:
     image: dd-salt-masterless
     build:
       context: .
+      dockerfile: ./dist/${TEST_DIST}_Dockerfile
     volumes:
       - ./minion.d:/etc/salt/minion.d
       - ./pillar:/srv/pillar
