@@ -6,7 +6,7 @@ datadog-apt-https:
     - name: apt-transport-https
 {%- endif %}
 
-{# Get the repository we should be looking in #}
+{# Determine if we're looking for the latest package or a specific version #}
 {%- if datadog_settings.agent_version == 'latest' %}
     {%- set latest = true %}
 {%- else %}
@@ -18,17 +18,21 @@ datadog-repo:
   pkgrepo.managed:
     - humanname: "Datadog, Inc."
     {%- if grains['os_family'].lower() == 'debian' -%}
+
+        {# Determine beta or stable distribution from version #}
         {%- if not latest and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
             {% set distribution = 'beta' %}
         {% else %}
             {% set distribution = 'stable' %}
         {%- endif %}
 
+        {# Determine which channel we should look in #}
         {%- if latest or parsed_version[1] == '6' %}
             {% set packages = '6' %}
         {%- else %}
             {% set packages = 'main' %}
         {%- endif %}
+
     - name: deb https://apt.datadoghq.com/ {{ distribution }} {{ packages }}
     - keyserver: keyserver.ubuntu.com
     - keyid: 382E94DE
@@ -36,6 +40,8 @@ datadog-repo:
     - require:
       - pkg: datadog-apt-https
     {%- elif grains['os_family'].lower() == 'redhat' %}
+
+        {# Determine the location of the package we want #}
         {%- if not latest and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
             {% set path = 'beta' %}
         {%- elif latest or parsed_version[1] == '6' %}
@@ -43,6 +49,7 @@ datadog-repo:
         {%- else %}
             {% set path = 'rpm' %}
         {%- endif %}
+
     - name: datadog
     - baseurl: https://yum.datadoghq.com/{{ path }}/{{ grains['cpuarch'] }}
     - gpgcheck: '1'
