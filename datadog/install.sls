@@ -55,7 +55,9 @@ datadog-pkg:
     - name: {{ datadog_settings.pkg_name }}
     {%- if latest %}
     - version: 'latest'
-    {%- else %}
+    {%- elif grains['os_family'].lower() == 'debian' %}
+    - version: 1:{{ datadog_settings.agent_version }}-1
+    {%- elif grains['os_family'].lower() == 'redhat' %}
     - version: {{ datadog_settings.agent_version }}-1
     {%- endif %}
     - ignore_epoch: True
