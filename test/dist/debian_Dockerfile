@@ -1,16 +1,31 @@
-FROM saltstack/ubuntu-14.04-minimal
+FROM ubuntu:16.04
 LABEL maintainer="package@datadoghq.com"
+ENV container docker
 
-# preparation
+# preparation for saltstack
 RUN apt-get update &&\
     apt-get install -y curl
 
 # install salt
-RUN curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable
+RUN curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
 
-# update python-msgpack
-RUN apt-get install -y python-msgpack
+# remove unncessary services and make sure we don't automatically close the session
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i = systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+rm -f /etc/systemd/system/*.wants/*;\
+rm -f /lib/systemd/system/local-fs.target.wants/*; \
+rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+rm -f /lib/systemd/system/basic.target.wants/*;\
+rm -f /lib/systemd/system/anaconda.target.wants/*;
+VOLUME [ "/sys/fs/cgroup" ]
+STOPSIGNAL SIGRTMIN+3
 
-# Add and set start script
-ADD start.sh /start.sh
-CMD ["bash", "start.sh"]
+# enable salt services and power off when session ends
+ADD enable_salt_services.sh /
+ADD override.conf /etc/systemd/system/console-getty.service.d/override.conf
+
+# start systemd
+CMD ["/bin/systemd", "--system"]
+
+# add the start test script
+ADD start.sh /
