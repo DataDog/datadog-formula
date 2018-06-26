@@ -1,14 +1,12 @@
 version: '3'
 
 services:
-  redhat_masterless:
-    image: dd-salt-redhat-masterless
+  masterless:
+    image: dd-salt-${TEST_DIST}-masterless
     build:
       context: .
-      dockerfile: ./dist/redhat_Dockerfile
-    privileged: true
+      dockerfile: ./dist/${TEST_DIST}_Dockerfile
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - ./minion.d:/etc/salt/minion.d
       - ./pillar:/srv/pillar
       - ./base:/srv/salt/base

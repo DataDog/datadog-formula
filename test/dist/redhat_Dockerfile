@@ -1,29 +1,15 @@
 FROM centos:7
 LABEL maintainer="package@datadoghq.com"
-ENV container docker
 
 # preparation for saltstack
 RUN yum -y update
 
+# enable systemd, thanks to @gdraheim (https://github.com/gdraheim/)
+RUN curl -o /bin/systemctl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/e72f1f7e074df549d9593275c38f9485dae1ab6b/files/docker/systemctl.py
+
 # install salt
 RUN curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
 
-# remove unncessary services 
-RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
-rm -f /etc/systemd/system/*.wants/*;\
-rm -f /lib/systemd/system/local-fs.target.wants/*; \
-rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
-rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
-rm -f /lib/systemd/system/basic.target.wants/*;\
-rm -f /lib/systemd/system/anaconda.target.wants/*;
-VOLUME [ "/sys/fs/cgroup" ]
-
-# enable salt services and power off when session ends
-ADD enable_salt_services.sh /
-ADD override.conf /etc/systemd/system/console-getty.service.d/override.conf
-
-# start systemd
-CMD ["/usr/sbin/init"]
-
 # add the start test script
-ADD start.sh /
+ADD start.sh /start.sh
+CMD ["bash", "start.sh"]

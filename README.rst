@@ -52,8 +52,7 @@ First, build and run a Docker container to create a masterless SaltStack minion.
 a Debian- or Redhat-based minion. Then, get a shell running in the container.
 ```shell
     $ cd test/
-    $ docker-compose -f debian_docker-compose.yml up -d
-    $ docker-compose -f debian_docker-compose.yml exec debian_masterless /bin/bash
+    $ TEST_DIST=debian docker-compose run masterless /bin/bash
 ```
 
 Once you've built the container and have a shell up and running, you need to apply the SaltStack state on your minion:
@@ -81,7 +80,6 @@ Run the formula
 .. code-block::
 
     $ cd test/
-    $ docker-compose -f debian_docker-compose.yml up -d
-    $ docker-compose -f debian_docker-compose.yml exec debian_masterless /bin/bash /start.sh
+    $ TEST_DIST=debian docker-compose up
 
 You should be able to see from the logs if all the states completed successfully.
