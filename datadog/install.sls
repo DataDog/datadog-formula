@@ -1,4 +1,4 @@
-{% from "datadog/map.jinja" import datadog_settings with context %}
+{% from "datadog/map.jinja" import datadog_settings, latest_agent_version, parsed_version with context %}
 
 {%- if grains['os_family'].lower() == 'debian' %}
 datadog-apt-https:
@@ -6,26 +6,18 @@ datadog-apt-https:
     - name: apt-transport-https
 {%- endif %}
 
-{# Determine if we're looking for the latest package or a specific version #}
-{%- if datadog_settings.agent_version == 'latest' %}
-    {%- set latest = true %}
-{%- else %}
-    {%- set latest = false %}
-    {%- set parsed_version = datadog_settings.agent_version | regex_match('(([0-9]+)\.[0-9]+\.[0-9]+)(?:~(rc|beta)\.([0-9]+-[0-9]+))?') %}
-{%- endif %}
-
 datadog-repo:
   pkgrepo.managed:
     - humanname: "Datadog, Inc."
     {%- if grains['os_family'].lower() == 'debian' -%}
         {#- Determine beta or stable distribution from version #}
-        {%- if not latest and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
+        {%- if not latest_agent_version and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
             {% set distribution = 'beta' %}
         {%- else %}
             {% set distribution = 'stable' %}
         {%- endif %}
         {#- Determine which channel we should look in #}
-        {%- if latest or parsed_version[1] == '6' %}
+        {%- if latest_agent_version or parsed_version[1] == '6' %}
             {% set packages = '6' %}
         {%- else %}
             {% set packages = 'main' %}
@@ -38,9 +30,9 @@ datadog-repo:
       - pkg: datadog-apt-https
     {%- elif grains['os_family'].lower() == 'redhat' %}
         {#- Determine the location of the package we want #}
-        {%- if not latest and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
+        {%- if not latest_agent_version and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
             {% set path = 'beta' %}
-        {%- elif latest or parsed_version[1] == '6' %}
+        {%- elif latest_agent_version or parsed_version[1] == '6' %}
             {% set path = 'stable/6' %}
         {%- else %}
             {% set path = 'rpm' %}
@@ -55,7 +47,7 @@ datadog-repo:
 datadog-pkg:
   pkg.installed:
     - name: {{ datadog_settings.pkg_name }}
-    {%- if latest %}
+    {%- if latest_agent_version %}
     - version: 'latest'
     {%- elif grains['os_family'].lower() == 'debian' %}
     - version: 1:{{ datadog_settings.agent_version }}-1
