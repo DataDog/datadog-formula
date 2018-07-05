@@ -8,16 +8,47 @@
 {% set default_settings = {
     'datadog': {
         'pkg_name': 'datadog-agent',
-        'config_folder': '/etc/dd-agent',
-        'config_file': 'datadog.conf',
-        'checks_confd': '/etc/dd-agent/conf.d',
         'service_name': 'datadog-agent',
         'api_key': 'aaaaaaaabbbbbbbbccccccccdddddddd',
+        'agent_version': '5.25.0',
     }
 }%}
 
-{## Merge os_family_map into the default settings ##}
-{% do default_settings.datadog.update(os_family_map) %}
+{# Merge os_family_map into the default settings #}
+{% do default_settings.datadog.update(os_family_map) %} 
 
-{## Merge in datadog pillar ##}
+{# Merge in datadog pillar #}
 {% set datadog_settings = salt['pillar.get']('datadog', default=default_settings.datadog, merge=True) %}
+
+{# Determine if we're looking for the latest package or a specific version #}
+{%- if datadog_settings.agent_version == 'latest' %}
+    {%- set latest_agent_version = true %}
+{%- else %}
+    {%- set latest_agent_version = false %}
+    {%- set parsed_version = datadog_settings.agent_version | regex_match('(([0-9]+)\.[0-9]+\.[0-9]+)(?:~(rc|beta)\.([0-9]+-[0-9]+))?') %}
+{%- endif %}
+
+{# Determine defaults depending on specified version #}
+{% if 'config_folder' not in datadog_settings %}
+    {%- if latest_agent_version or parsed_version[1] == '6' %}
+        {% do datadog_settings.update({'config_folder': '/etc/datadog-agent'}) %}
+    {%- else %}
+        {% do datadog_settings.update({'config_folder': '/etc/dd-agent'}) %}
+    {%- endif %}
+{% endif %}
+
+{% if 'config_file' not in datadog_settings %}
+    {%- if latest_agent_version or parsed_version[1] == '6' %}
+        {% do datadog_settings.update({'config_file': 'datadog.yaml'}) %}
+    {%- else %}
+        {% do datadog_settings.update({'config_file': 'datadog.conf'}) %}
+    {%- endif %}
+{% endif %}
+
+{% if 'checks_confd' not in datadog_settings %}
+    {%- if latest_agent_version or parsed_version[1] == '6' %}
+        {% do datadog_settings.update({'checks_confd': '/etc/datadog-agent/conf.d'}) %}
+    {%- else %}
+        {% do datadog_settings.update({'checks_confd': '/etc/dd-agent/conf.d'}) %}
+    {%- endif %}
+{% endif %}

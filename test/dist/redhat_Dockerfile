@@ -1,0 +1,15 @@
+FROM centos:7
+LABEL maintainer="package@datadoghq.com"
+
+# preparation for saltstack
+RUN yum -y update
+
+# enable systemd, thanks to @gdraheim (https://github.com/gdraheim/)
+RUN curl -o /bin/systemctl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/e72f1f7e074df549d9593275c38f9485dae1ab6b/files/docker/systemctl.py
+
+# install salt
+RUN curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
+
+# add the start test script
+ADD start.sh /start.sh
+CMD ["bash", "start.sh"]
