@@ -1,5 +1,11 @@
 # Changes
 
+## 2.0 / 2018-07-05
+
+* Add support for Agent 6.
+* Add option to specify which version of the Agent to install (installs the latest version of Agent 6 by default).
+* Add CentOS testing environment, with the ability to specify which testing environment you want to spin up.
+
 ## 1.2 / 2018-06-05
 
 * Make datadog.checks optional, see [#22][].
