@@ -28,6 +28,9 @@ datadog-repo:
     - file: /etc/apt/sources.list.d/datadog.list
     - require:
       - pkg: datadog-apt-https
+    - retry:
+      - attempts: 5
+      - interval: 1
     {%- elif grains['os_family'].lower() == 'redhat' %}
         {#- Determine the location of the package we want #}
         {%- if not latest_agent_version and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
