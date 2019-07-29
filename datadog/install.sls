@@ -24,7 +24,7 @@ datadog-repo:
         {%- endif %}
     - name: deb https://apt.datadoghq.com/ {{ distribution }} {{ packages }}
     - keyserver: keyserver.ubuntu.com
-    - keyid: 382E94DE
+    - keyid: A2923DFF56EDA6E76E55E492D3A80E30382E94DE
     - file: /etc/apt/sources.list.d/datadog.list
     - require:
       - pkg: datadog-apt-https
