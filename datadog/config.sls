@@ -23,6 +23,18 @@ datadog-conf:
       - pkg: datadog-pkg
 {% endif %}
 
+{% if datadog_settings.site is defined %}
+datadog-conf:
+  file.replace:
+    - name: {{ config_file_path }}
+    - pattern: "(.*)site:(.*)"
+    - repl: "site: {{ datadog_settings.site }}"
+    - count: 1
+    - onlyif: test -f {{ config_file_path }}
+    - watch:
+      - pkg: datadog-pkg
+{% endif %}
+
 {% if datadog_settings.checks is defined %}
 {% for check_name in datadog_settings.checks %}
 datadog_{{ check_name }}_yaml_installed:
