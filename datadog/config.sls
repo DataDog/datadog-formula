@@ -12,7 +12,7 @@ datadog-example:
       - pkg: datadog-pkg
 
 {% if datadog_settings.api_key is defined %}
-datadog-conf:
+datadog-conf-api-key:
   file.replace:
     - name: {{ config_file_path }}
     - pattern: "api_key:(.*)"
@@ -22,6 +22,20 @@ datadog-conf:
     - watch:
       - pkg: datadog-pkg
 {% endif %}
+
+datadog-conf-site:
+  file.replace:
+    - name: {{ config_file_path }}
+    - pattern: "(.*)site:(.*)"
+{% if datadog_settings.site is defined %}
+    - repl: "site: {{ datadog_settings.site }}"
+{% else %}
+    - repl: "# site: datadoghq.com"
+{% endif %}
+    - count: 1
+    - onlyif: test -f {{ config_file_path }}
+    - watch:
+      - pkg: datadog-pkg
 
 {% if datadog_settings.checks is defined %}
 {% for check_name in datadog_settings.checks %}

@@ -1,5 +1,6 @@
 datadog:
   api_key: aaaaaaaabbbbbbbbccccccccdddddddd
+  site: datadoghq.com
   checks:
     directory:
       instances:
