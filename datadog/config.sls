@@ -37,6 +37,20 @@ datadog-conf-site:
     - watch:
       - pkg: datadog-pkg
 
+datadog-conf-python-version:
+  file.replace:
+    - name: {{ config_file_path }}
+    - pattern: "(.*)python_version:(.*)"
+{% if datadog_settings.python_version is defined %}
+    - repl: "python_version: {{ datadog_settings.python_version }}"
+{% else %}
+    - repl: "# python_version: 2"
+{% endif %}
+    - count: 1
+    - onlyif: test -f {{ config_file_path }}
+    - watch:
+      - pkg: datadog-pkg
+
 {% if datadog_settings.checks is defined %}
 {% for check_name in datadog_settings.checks %}
 datadog_{{ check_name }}_yaml_installed:
