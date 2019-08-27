@@ -1,5 +1,13 @@
 # Changes
 
+## 2.1 / 2019-08-27
+
+* [FEATURE] Add python_version option [#33][]
+* [FEATURE] Add site option [#32][]
+* [BUGFIX] Retry on failure when pulling the gpg key from keyserver.ubuntu.com [#28][]
+* [OTHER] Trust the new rpm gpg key on RHEL [#31][]
+* [OTHER] Use the long apt key fingerprint [#30][]
+
 ## 2.0 / 2018-07-05
 
 * Add support for Agent 6.
@@ -27,3 +35,8 @@
 [#18]: https://github.com/DataDog/datadog-formula/issues/18
 [#20]: https://github.com/DataDog/datadog-formula/issues/20
 [#22]: https://github.com/DataDog/datadog-formula/issues/22
+[#28]: https://github.com/DataDog/datadog-formula/issues/28
+[#30]: https://github.com/DataDog/datadog-formula/issues/30
+[#31]: https://github.com/DataDog/datadog-formula/issues/31
+[#32]: https://github.com/DataDog/datadog-formula/issues/32
+[#33]: https://github.com/DataDog/datadog-formula/issues/33
