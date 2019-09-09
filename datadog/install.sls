@@ -1,4 +1,4 @@
-{% from "datadog/map.jinja" import datadog_settings, latest_agent_version, parsed_version with context %}
+{% from "datadog/map.jinja" import datadog_install_settings, latest_agent_version, parsed_version with context %}
 
 {%- if grains['os_family'].lower() == 'debian' %}
 datadog-apt-https:
@@ -49,13 +49,13 @@ datadog-repo:
 
 datadog-pkg:
   pkg.installed:
-    - name: {{ datadog_settings.pkg_name }}
+    - name: {{ datadog_install_settings.pkg_name }}
     {%- if latest_agent_version %}
     - version: 'latest'
     {%- elif grains['os_family'].lower() == 'debian' %}
-    - version: 1:{{ datadog_settings.agent_version }}-1
+    - version: 1:{{ datadog_install_settings.agent_version }}-1
     {%- elif grains['os_family'].lower() == 'redhat' %}
-    - version: {{ datadog_settings.agent_version }}-1
+    - version: {{ datadog_install_settings.agent_version }}-1
     {%- endif %}
     - ignore_epoch: True
     - refresh: True

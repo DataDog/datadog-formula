@@ -1,7 +1,9 @@
 datadog:
-  api_key: aaaaaaaabbbbbbbbccccccccdddddddd
-  site: datadoghq.com
-  python_version: 2
+  config:
+    api_key: aaaaaaaabbbbbbbbccccccccdddddddd
+    site: datadoghq.com
+    python_version: 2
+
   checks:
     process:
       init_config:
@@ -14,3 +16,6 @@ datadog:
         - host: 127.0.0.1
           name: sshd
           port: 22
+
+  install_settings:
+    agent_version: latest

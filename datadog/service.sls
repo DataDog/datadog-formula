@@ -1,13 +1,13 @@
-{% from "datadog/map.jinja" import datadog_settings with context %}
-{% set config_file_path = '%s/%s'|format(datadog_settings.config_folder, datadog_settings.config_file) -%}
+{% from "datadog/map.jinja" import datadog_install_settings, datadog_checks with context %}
+{% set config_file_path = '%s/%s'|format(datadog_install_settings.config_folder, datadog_install_settings.config_file) -%}
 
 datadog-agent-service:
   service.running:
-    - name: {{ datadog_settings.service_name }}
+    - name: {{ datadog_install_settings.service_name }}
     - enable: True
     - watch:
-      - pkg: {{ datadog_settings.pkg_name }}
+      - pkg: {{ datadog_install_settings.pkg_name }}
       - file: {{ config_file_path }}
-{%- if datadog_settings.checks is defined %}
-      - file: {{ datadog_settings.checks_confd }}/*
+{%- if datadog_checks | length %}
+      - file: {{ datadog_install_settings.checks_confd }}/*
 {% endif %}
