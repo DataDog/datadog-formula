@@ -4,4 +4,6 @@
 api_key:
 {% endif -%}
 
+{% if datadog_config | length -%}
 {{ datadog_config | yaml(False) }}
+{% endif -%}
