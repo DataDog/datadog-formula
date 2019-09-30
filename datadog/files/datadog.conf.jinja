@@ -4,7 +4,7 @@
 dd_url: https://app.datadoghq.com
 
 {% if datadog_config.api_key is not defined -%}
-apt_key:
+api_key:
 {% else -%}
 api_key: {{ datadog_config.api_key }}
 {% endif -%}
