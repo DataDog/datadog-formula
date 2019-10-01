@@ -29,7 +29,7 @@ datadog_yaml_installed:
 {% for check_name in datadog_checks %}
 datadog_{{ check_name }}_yaml_installed:
   file.managed:
-    - name: {{ datadog_install_settings.checks_confd }}/{{ check_name }}.yaml
+    - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.yaml
     - source: salt://datadog/files/conf.yaml.jinja
     - user: dd-agent
     - group: root

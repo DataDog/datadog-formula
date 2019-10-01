@@ -12,7 +12,6 @@
         'install_settings': {
             'agent_version': 'latest',
         },
-
     }
 }%}
 
@@ -46,10 +45,12 @@
     {% do datadog_install_settings.update({'config_file': 'datadog.conf'}) %}
 {%- endif %}
 
-{% if 'checks_confd' not in datadog_install_settings %}
+{%- if 'confd_path' in datadog_config %}
+    {% do datadog_install_settings.update({'confd_path': datadog_config.confd_path }) %}
+{%- else %}
     {%- if latest_agent_version or parsed_version[1] == '6' %}
-        {% do datadog_install_settings.update({'checks_confd': '/etc/datadog-agent/conf.d'}) %}
+        {% do datadog_install_settings.update({'confd_path': '/etc/datadog-agent/conf.d'}) %}
     {%- else %}
-        {% do datadog_install_settings.update({'checks_confd': '/etc/dd-agent/conf.d'}) %}
+        {% do datadog_install_settings.update({'confd_path': '/etc/dd-agent/conf.d'}) %}
     {%- endif %}
-{% endif %}
+{%- endif %}

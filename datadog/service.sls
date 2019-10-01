@@ -9,5 +9,5 @@ datadog-agent-service:
       - pkg: datadog-agent
       - file: {{ config_file_path }}
 {%- if datadog_checks | length %}
-      - file: {{ datadog_install_settings.checks_confd }}/*
+      - file: {{ datadog_install_settings.confd_path }}/*
 {% endif %}
