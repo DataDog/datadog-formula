@@ -1,0 +1,9 @@
+{% from "datadog/map.jinja" import datadog_config with context -%}
+
+{% if datadog_config.api_key is not defined -%}
+api_key:
+{% endif -%}
+
+{% if datadog_config | length -%}
+{{ datadog_config | yaml(False) }}
+{% endif -%}

@@ -1,5 +1,7 @@
-{% if pillar.datadog.checks[check_name].init_config is not defined -%}
+{% from "datadog/map.jinja" import datadog_checks with context -%}
+
+{% if datadog_checks[check_name].init_config is not defined -%}
 init_config:
 {% endif -%}
 
-{{ pillar.datadog.checks[check_name] | yaml(False) }}
+{{ datadog_checks[check_name] | yaml(False) }}

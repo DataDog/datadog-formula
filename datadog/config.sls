@@ -1,61 +1,35 @@
-{% from "datadog/map.jinja" import datadog_settings with context %}
-{% set config_file_path = '%s/%s'|format(datadog_settings.config_folder, datadog_settings.config_file) -%}
-{% set example_file_path = '%s.example'|format(config_file_path) -%}
+{% from "datadog/map.jinja" import datadog_config, datadog_install_settings, datadog_checks, latest_agent_version, parsed_version with context %}
+{% set config_file_path = '%s/%s'|format(datadog_install_settings.config_folder, datadog_install_settings.config_file) -%}
 
-datadog-example:
-  file.copy:
+{%- if not latest_agent_version and parsed_version[1] == '5' %}
+datadog_conf_installed:
+  file.managed:
     - name: {{ config_file_path }}
-    - source: {{ example_file_path }}
-    # file.copy will not overwrite a named file, so we only need to check if the example config file exists
-    - onlyif: test -f {{ example_file_path }}
+    - source: salt://datadog/files/datadog.conf.jinja
+    - user: dd-agent
+    - group: dd-agent
+    - mode: 600
+    - template: jinja
     - require:
       - pkg: datadog-pkg
-
-{% if datadog_settings.api_key is defined %}
-datadog-conf-api-key:
-  file.replace:
+{%- else %}
+datadog_yaml_installed:
+  file.managed:
     - name: {{ config_file_path }}
-    - pattern: "api_key:(.*)"
-    - repl: "api_key: {{ datadog_settings.api_key }}"
-    - count: 1
-    - onlyif: test -f {{ config_file_path }}
-    - watch:
+    - source: salt://datadog/files/datadog.yaml.jinja
+    - user: dd-agent
+    - group: dd-agent
+    - mode: 600
+    - template: jinja
+    - require:
       - pkg: datadog-pkg
-{% endif %}
+{%- endif %}
 
-datadog-conf-site:
-  file.replace:
-    - name: {{ config_file_path }}
-    - pattern: "(.*)site:(.*)"
-{% if datadog_settings.site is defined %}
-    - repl: "site: {{ datadog_settings.site }}"
-{% else %}
-    - repl: "# site: datadoghq.com"
-{% endif %}
-    - count: 1
-    - onlyif: test -f {{ config_file_path }}
-    - watch:
-      - pkg: datadog-pkg
-
-datadog-conf-python-version:
-  file.replace:
-    - name: {{ config_file_path }}
-    - pattern: "(.*)python_version:(.*)"
-{% if datadog_settings.python_version is defined %}
-    - repl: "python_version: {{ datadog_settings.python_version }}"
-{% else %}
-    - repl: "# python_version: 2"
-{% endif %}
-    - count: 1
-    - onlyif: test -f {{ config_file_path }}
-    - watch:
-      - pkg: datadog-pkg
-
-{% if datadog_settings.checks is defined %}
-{% for check_name in datadog_settings.checks %}
+{% if datadog_checks is defined %}
+{% for check_name in datadog_checks %}
 datadog_{{ check_name }}_yaml_installed:
   file.managed:
-    - name: {{ datadog_settings.checks_confd }}/{{ check_name }}.yaml
+    - name: {{ datadog_install_settings.checks_confd }}/{{ check_name }}.yaml
     - source: salt://datadog/files/conf.yaml.jinja
     - user: dd-agent
     - group: root
