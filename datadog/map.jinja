@@ -11,8 +11,6 @@
         'checks': {},
         'install_settings': {
             'agent_version': 'latest',
-            'pkg_name': 'datadog-agent',
-            'service_name': 'datadog-agent',
         },
 
     }
@@ -35,23 +33,18 @@
     {%- set parsed_version = datadog_install_settings.agent_version | regex_match('(([0-9]+)\.[0-9]+\.[0-9]+)(?:~(rc|beta)\.([0-9]+-[0-9]+))?') %}
 {%- endif %}
 
-
 {# Determine defaults depending on specified version #}
-{% if 'config_folder' not in datadog_install_settings %}
-    {%- if latest_agent_version or parsed_version[1] == '6' %}
-        {% do datadog_install_settings.update({'config_folder': '/etc/datadog-agent'}) %}
-    {%- else %}
-        {% do datadog_install_settings.update({'config_folder': '/etc/dd-agent'}) %}
-    {%- endif %}
-{% endif %}
+{%- if latest_agent_version or parsed_version[1] == '6' %}
+    {% do datadog_install_settings.update({'config_folder': '/etc/datadog-agent'}) %}
+{%- else %}
+    {% do datadog_install_settings.update({'config_folder': '/etc/dd-agent'}) %}
+{%- endif %}
 
-{% if 'config_file' not in datadog_install_settings %}
-    {%- if latest_agent_version or parsed_version[1] == '6' %}
-        {% do datadog_install_settings.update({'config_file': 'datadog.yaml'}) %}
-    {%- else %}
-        {% do datadog_install_settings.update({'config_file': 'datadog.conf'}) %}
-    {%- endif %}
-{% endif %}
+{%- if latest_agent_version or parsed_version[1] == '6' %}
+    {% do datadog_install_settings.update({'config_file': 'datadog.yaml'}) %}
+{%- else %}
+    {% do datadog_install_settings.update({'config_file': 'datadog.conf'}) %}
+{%- endif %}
 
 {% if 'checks_confd' not in datadog_install_settings %}
     {%- if latest_agent_version or parsed_version[1] == '6' %}
