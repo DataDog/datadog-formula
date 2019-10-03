@@ -27,12 +27,26 @@ datadog_yaml_installed:
 
 {% if datadog_checks is defined %}
 {% for check_name in datadog_checks %}
+{%- if latest_agent_version or parsed_version[1] == '6' %}
+datadog_{{ check_name }}.d_directory_created:
+  file.directory:
+    - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.d
+    - user: dd-agent
+    - group: dd-agent
+    - mode: 755
+    - makedirs: True
+{%- endif %}
+
 datadog_{{ check_name }}_yaml_installed:
   file.managed:
+    {%- if not latest_agent_version and parsed_version[1] == '5' %}
     - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.yaml
+    {%- else %}
+    - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.d/conf.yaml
+    {%- endif %}
     - source: salt://datadog/files/conf.yaml.jinja
     - user: dd-agent
-    - group: root
+    - group: dd-agent
     - mode: 600
     - template: jinja
     - context:
