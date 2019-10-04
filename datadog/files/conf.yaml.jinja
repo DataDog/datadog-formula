@@ -1,7 +1,11 @@
 {% from "datadog/map.jinja" import datadog_checks with context -%}
 
-{% if datadog_checks[check_name].init_config is not defined -%}
+{% if datadog_checks[check_name].config is defined -%}
+
+{% if datadog_checks[check_name].config.init_config is not defined -%}
 init_config:
 {% endif -%}
 
-{{ datadog_checks[check_name] | yaml(False) }}
+{{ datadog_checks[check_name].config | yaml(False) }}
+
+{% endif -%}

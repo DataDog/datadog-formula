@@ -37,5 +37,14 @@ datadog_{{ check_name }}_yaml_installed:
     - template: jinja
     - context:
         check_name: {{ check_name }}
+
+{%- if latest_agent_version or parsed_version[1] == '6' %}
+{%- if datadog_checks[check_name].version is defined %}
+datadog_{{ check_name }}_version_{{ datadog_checks[check_name].version }}_installed:
+  cmd.run:
+    - name: sudo -u dd-agent datadog-agent integration install datadog-{{ check_name }}=={{ datadog_checks[check_name].version }}
+{%- endif %}
+{%- endif %}
+
 {% endfor %}
 {% endif %}
