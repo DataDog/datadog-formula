@@ -3,11 +3,11 @@
 
 datadog-agent-service:
   service.running:
-    - name: {{ datadog_install_settings.service_name }}
+    - name: datadog-agent
     - enable: True
     - watch:
-      - pkg: {{ datadog_install_settings.pkg_name }}
+      - pkg: datadog-agent
       - file: {{ config_file_path }}
 {%- if datadog_checks | length %}
-      - file: {{ datadog_install_settings.checks_confd }}/*
+      - file: {{ datadog_install_settings.confd_path }}/*
 {% endif %}

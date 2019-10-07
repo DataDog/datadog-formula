@@ -2,10 +2,10 @@
 
 datadog-uninstall:
   service.dead:
-    - name: {{ datadog_install_settings.service_name }}
+    - name: datadog-agent
     - enable: False
   pkg.removed:
     - pkgs:
-      - {{ datadog_install_settings.pkg_name }}
+      - datadog-agent
     - require:
       - service: datadog-uninstall
