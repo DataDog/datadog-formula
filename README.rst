@@ -45,7 +45,7 @@ Stops the service and uninstalls Datadog Agent.
 Pillar configuration
 ====================
 
-The formula configuration must be written in the `datadog` key of the pillar file.
+The formula configuration must be written in the ``datadog`` key of the pillar file.
 
 The formula configuration contains three parts: ``config``, ``install_settings``, and ``checks``.
 
@@ -72,7 +72,7 @@ Example: set the API key, and the site option to ``datadoghq.eu`` (Agent v6 only
 The ``install_settings`` option contains the Agent installation configuration options.
 It has the following option:
 
-- ``agent_version``: the version of the Agent which will be installed.
+- ``agent_version``: the version of the Agent which will be installed. Default: latest.
 
 Example: install the Agent version ``6.14.1``
 
@@ -92,7 +92,7 @@ To add an Agent Check, add an entry in the ``checks`` option with the check's na
 Each check has two options:
 
 - ``config``: contains the check's configuration, which will be written to the check's configuration file (``<confd_path>/<check>.d/conf.yaml`` for Agent v6, ``<confd_path>/<check>.yaml`` for Agent v5).
-- ``version``: the version of the check which will be installed (Agent v6 only).
+- ``version``: the version of the check which will be installed (Agent v6 only). Default: the version bundled with the agent.
 
 Example: ``directory`` check version ``1.4.0``, monitoring the ``/srv/pillar`` directory
 
