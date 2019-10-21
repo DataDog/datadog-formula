@@ -33,13 +33,13 @@
 {%- endif %}
 
 {# Determine defaults depending on specified version #}
-{%- if latest_agent_version or parsed_version[1] == '6' %}
+{%- if latest_agent_version or parsed_version[1] != '5' %}
     {% do datadog_install_settings.update({'config_folder': '/etc/datadog-agent'}) %}
 {%- else %}
     {% do datadog_install_settings.update({'config_folder': '/etc/dd-agent'}) %}
 {%- endif %}
 
-{%- if latest_agent_version or parsed_version[1] == '6' %}
+{%- if latest_agent_version or parsed_version[1] != '5' %}
     {% do datadog_install_settings.update({'config_file': 'datadog.yaml'}) %}
 {%- else %}
     {% do datadog_install_settings.update({'config_file': 'datadog.conf'}) %}
@@ -48,7 +48,7 @@
 {%- if 'confd_path' in datadog_config %}
     {% do datadog_install_settings.update({'confd_path': datadog_config.confd_path }) %}
 {%- else %}
-    {%- if latest_agent_version or parsed_version[1] == '6' %}
+    {%- if latest_agent_version or parsed_version[1] != '5' %}
         {% do datadog_install_settings.update({'confd_path': '/etc/datadog-agent/conf.d'}) %}
     {%- else %}
         {% do datadog_install_settings.update({'confd_path': '/etc/dd-agent/conf.d'}) %}

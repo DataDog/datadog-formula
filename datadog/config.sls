@@ -38,7 +38,7 @@ datadog_{{ check_name }}_yaml_installed:
     - context:
         check_name: {{ check_name }}
 
-{%- if latest_agent_version or parsed_version[1] == '6' %}
+{%- if latest_agent_version or parsed_version[1] != '5' %}
 {%- if datadog_checks[check_name].version is defined %}
 datadog_{{ check_name }}_version_{{ datadog_checks[check_name].version }}_installed:
   cmd.run:

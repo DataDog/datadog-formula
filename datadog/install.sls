@@ -17,7 +17,9 @@ datadog-repo:
             {% set distribution = 'stable' %}
         {%- endif %}
         {#- Determine which channel we should look in #}
-        {%- if latest_agent_version or parsed_version[1] == '6' %}
+        {%- if latest_agent_version or parsed_version[1] == '7' %}
+            {% set packages = '7' %}
+        {%- elif parsed_version[1] == '6' %}
             {% set packages = '6' %}
         {%- else %}
             {% set packages = 'main' %}
@@ -35,7 +37,9 @@ datadog-repo:
         {#- Determine the location of the package we want #}
         {%- if not latest_agent_version and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
             {% set path = 'beta' %}
-        {%- elif latest_agent_version or parsed_version[1] == '6' %}
+        {%- elif latest_agent_version or parsed_version[1] == '7' %}
+            {% set path = 'stable/7' %}
+        {%- elif parsed_version[1] == '6' %}
             {% set path = 'stable/6' %}
         {%- else %}
             {% set path = 'rpm' %}
