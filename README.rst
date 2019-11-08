@@ -51,7 +51,7 @@ The formula configuration contains three parts: ``config``, ``install_settings``
 
 ``config``
 ----------
-The ``config`` option contains the configuration options which will be written in the minions' Agent configuration file (``datadog.yaml`` for Agent v6, ``datadog.conf`` for Agent v5).
+The ``config`` option contains the configuration options which will be written in the minions' Agent configuration file (``datadog.yaml`` for Agent v6 & v7, ``datadog.conf`` for Agent v5).
 
 Depending on the Agent version installed, different options can be set:
 
