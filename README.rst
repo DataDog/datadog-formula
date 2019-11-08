@@ -91,7 +91,7 @@ To add an Agent Check, add an entry in the ``checks`` option with the check's na
 
 Each check has two options:
 
-- ``config``: contains the check's configuration, which will be written to the check's configuration file (``<confd_path>/<check>.d/conf.yaml`` for Agent v6, ``<confd_path>/<check>.yaml`` for Agent v5).
+- ``config``: contains the check's configuration, which will be written to the check's configuration file (``<confd_path>/<check>.d/conf.yaml`` for Agent v6/v7, ``<confd_path>/<check>.yaml`` for Agent v5).
 - ``version``: the version of the check which will be installed (Agent v6 and v7 only). Default: the version bundled with the agent.
 
 Example: ``directory`` check version ``1.4.0``, monitoring the ``/srv/pillar`` directory
