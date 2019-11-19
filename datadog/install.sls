@@ -36,7 +36,13 @@ datadog-repo:
     {%- elif grains['os_family'].lower() == 'redhat' %}
         {#- Determine the location of the package we want #}
         {%- if not latest_agent_version and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
-            {% set path = 'beta' %}
+            {%- if parsed_version[1] == '7' %}
+                {% set path = 'beta/7' %}
+            {%- elif parsed_version[1] == '6' %}
+                {% set path = 'beta/6' %}
+            {%- else %}
+                {% set path = 'beta' %}
+            {%- endif %}
         {%- elif latest_agent_version or parsed_version[1] == '7' %}
             {% set path = 'stable/7' %}
         {%- elif parsed_version[1] == '6' %}
