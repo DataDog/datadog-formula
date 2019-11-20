@@ -53,7 +53,11 @@ datadog-repo:
     - name: datadog
     - baseurl: https://yum.datadoghq.com/{{ path }}/{{ grains['cpuarch'] }}
     - gpgcheck: '1'
+    {%- if latest_agent_version or parsed_version[1] == '7' %}
+    - gpgkey: https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+    {%- else %}
     - gpgkey: https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public https://yum.datadoghq.com/DATADOG_RPM_KEY.public
+    {%- endif %}
     - sslverify: '1'
     {% endif %}
 
