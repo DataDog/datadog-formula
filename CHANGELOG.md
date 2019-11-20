@@ -1,5 +1,17 @@
 # Changes
 
+## 3.0
+
+This release contains breaking changes to the pillar file structure. Please read the `README` file, in particular the `Pillar configuration`, as well as the [pillar example file](pillar.example) for details on how to write your pillar file.
+
+* [FEATURE] Add Agent v7 support [#40][]
+* [FEATURE] Allow all `datadog.yaml` config options for Agent v6 and v7 [#35][]
+* [FEATURE] Add ability to choose check versions [#37][]
+* [BUGFIX] Put check config files in the `<check>.d/` directory on Agent v6 and v7 [#39][]
+* [BUGFIX] Fix Agent v6 and v7 install from beta repositories [#42][]
+* [OTHER] Do not import the old rpm GPG key if installing Agent v7 [#43][]
+* [OTHER] Unused variable cleanup [#36][]
+
 ## 2.1 / 2019-08-27
 
 * [FEATURE] Add python_version option [#33][]
@@ -40,3 +52,10 @@
 [#31]: https://github.com/DataDog/datadog-formula/issues/31
 [#32]: https://github.com/DataDog/datadog-formula/issues/32
 [#33]: https://github.com/DataDog/datadog-formula/issues/33
+[#35]: https://github.com/DataDog/datadog-formula/issues/35
+[#36]: https://github.com/DataDog/datadog-formula/issues/36
+[#37]: https://github.com/DataDog/datadog-formula/issues/37
+[#39]: https://github.com/DataDog/datadog-formula/issues/39
+[#40]: https://github.com/DataDog/datadog-formula/issues/40
+[#42]: https://github.com/DataDog/datadog-formula/issues/42
+[#43]: https://github.com/DataDog/datadog-formula/issues/43
