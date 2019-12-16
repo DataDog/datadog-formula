@@ -34,7 +34,7 @@ datadog_{{ check_name }}_folder_installed:
     - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.d
     - user: dd-agent
     - group: root
-    - mode: 600
+    - mode: 700
 {%- endif %}
 
 datadog_{{ check_name }}_yaml_installed:
