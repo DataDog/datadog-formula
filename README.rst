@@ -147,6 +147,6 @@ Run the formula
 .. code-block:: shell
 
     $ cd test/
-    $ TEST_DIST=debian docker-compose up
+    $ TEST_DIST=debian docker-compose up --build
 
 You should be able to see from the logs if all the states completed successfully.
