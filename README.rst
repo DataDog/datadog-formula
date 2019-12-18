@@ -40,7 +40,72 @@ Agent itself and the checks.
 ``datadog.uninstall``
 ------------------
 
-Stops the service and uninstall Datadog Agent.
+Stops the service and uninstalls Datadog Agent.
+
+Pillar configuration
+====================
+
+The formula configuration must be written in the ``datadog`` key of the pillar file.
+
+The formula configuration contains three parts: ``config``, ``install_settings``, and ``checks``.
+
+``config``
+----------
+The ``config`` option contains the configuration options which will be written in the minions' Agent configuration file (``datadog.yaml`` for Agent v6 & v7, ``datadog.conf`` for Agent v5).
+
+Depending on the Agent version installed, different options can be set:
+
+- Agent v6 & v7: all options supported by the Agent's configuration file are supported.
+- Agent v5: only the ``api_key`` option is supported.
+
+Example: set the API key, and the site option to ``datadoghq.eu`` (Agent v6 only)
+
+.. code::
+
+  datadog:
+    config:
+      api_key: <your_api_key>
+      site: datadoghq.eu
+
+``install_settings``
+--------------------
+The ``install_settings`` option contains the Agent installation configuration options.
+It has the following option:
+
+- ``agent_version``: the version of the Agent which will be installed. Default: latest (will install the latest Agent v7 package).
+
+Example: install the Agent version ``6.14.1``
+
+.. code::
+
+  datadog:
+    install_settings:
+      agent_version: 6.14.1
+
+
+``checks``
+----------
+The ``checks`` option contains configuration for the Agent Checks.
+
+To add an Agent Check, add an entry in the ``checks`` option with the check's name as the key.
+
+Each check has two options:
+
+- ``config``: contains the check's configuration, which will be written to the check's configuration file (``<confd_path>/<check>.d/conf.yaml`` for Agent v6/v7, ``<confd_path>/<check>.yaml`` for Agent v5).
+- ``version``: the version of the check which will be installed (Agent v6 and v7 only). Default: the version bundled with the agent.
+
+Example: ``directory`` check version ``1.4.0``, monitoring the ``/srv/pillar`` directory
+
+.. code::
+
+  datadog:
+    checks:
+      directory:
+        config:
+          instances:
+            - directory: "/srv/pillar"
+              name: "pillars"
+        version: 1.4.0
 
 Development
 ===========
@@ -82,6 +147,6 @@ Run the formula
 .. code-block:: shell
 
     $ cd test/
-    $ TEST_DIST=debian docker-compose up
+    $ TEST_DIST=debian docker-compose up --build
 
 You should be able to see from the logs if all the states completed successfully.

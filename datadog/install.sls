@@ -1,4 +1,4 @@
-{% from "datadog/map.jinja" import datadog_settings, latest_agent_version, parsed_version with context %}
+{% from "datadog/map.jinja" import datadog_install_settings, latest_agent_version, parsed_version with context %}
 
 {%- if grains['os_family'].lower() == 'debian' %}
 datadog-apt-https:
@@ -17,7 +17,9 @@ datadog-repo:
             {% set distribution = 'stable' %}
         {%- endif %}
         {#- Determine which channel we should look in #}
-        {%- if latest_agent_version or parsed_version[1] == '6' %}
+        {%- if latest_agent_version or parsed_version[1] == '7' %}
+            {% set packages = '7' %}
+        {%- elif parsed_version[1] == '6' %}
             {% set packages = '6' %}
         {%- else %}
             {% set packages = 'main' %}
@@ -34,8 +36,16 @@ datadog-repo:
     {%- elif grains['os_family'].lower() == 'redhat' %}
         {#- Determine the location of the package we want #}
         {%- if not latest_agent_version and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
-            {% set path = 'beta' %}
-        {%- elif latest_agent_version or parsed_version[1] == '6' %}
+            {%- if parsed_version[1] == '7' %}
+                {% set path = 'beta/7' %}
+            {%- elif parsed_version[1] == '6' %}
+                {% set path = 'beta/6' %}
+            {%- else %}
+                {% set path = 'beta' %}
+            {%- endif %}
+        {%- elif latest_agent_version or parsed_version[1] == '7' %}
+            {% set path = 'stable/7' %}
+        {%- elif parsed_version[1] == '6' %}
             {% set path = 'stable/6' %}
         {%- else %}
             {% set path = 'rpm' %}
@@ -43,19 +53,23 @@ datadog-repo:
     - name: datadog
     - baseurl: https://yum.datadoghq.com/{{ path }}/{{ grains['cpuarch'] }}
     - gpgcheck: '1'
+    {%- if latest_agent_version or parsed_version[1] == '7' %}
+    - gpgkey: https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+    {%- else %}
     - gpgkey: https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public https://yum.datadoghq.com/DATADOG_RPM_KEY.public
+    {%- endif %}
     - sslverify: '1'
     {% endif %}
 
 datadog-pkg:
   pkg.installed:
-    - name: {{ datadog_settings.pkg_name }}
+    - name: datadog-agent
     {%- if latest_agent_version %}
     - version: 'latest'
     {%- elif grains['os_family'].lower() == 'debian' %}
-    - version: 1:{{ datadog_settings.agent_version }}-1
+    - version: 1:{{ datadog_install_settings.agent_version }}-1
     {%- elif grains['os_family'].lower() == 'redhat' %}
-    - version: {{ datadog_settings.agent_version }}-1
+    - version: {{ datadog_install_settings.agent_version }}-1
     {%- endif %}
     - ignore_epoch: True
     - refresh: True

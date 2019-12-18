@@ -1,11 +1,11 @@
-{% from "datadog/map.jinja" import datadog_settings with context %}
+{% from "datadog/map.jinja" import datadog_install_settings with context %}
 
 datadog-uninstall:
   service.dead:
-    - name: {{ datadog_settings.service_name }}
+    - name: datadog-agent
     - enable: False
   pkg.removed:
     - pkgs:
-      - {{ datadog_settings.pkg_name }}
+      - datadog-agent
     - require:
       - service: datadog-uninstall

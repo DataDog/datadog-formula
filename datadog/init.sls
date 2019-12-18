@@ -1,4 +1,4 @@
 include:
-  - datadog.config
   - datadog.install
+  - datadog.config
   - datadog.service
