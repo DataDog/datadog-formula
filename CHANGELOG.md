@@ -12,6 +12,7 @@ This release contains breaking changes to the pillar file structure. Please read
 * [BUGFIX] Put check config files in the `<check>.d/` directory on Agent v6 and v7 [#39][]
 * [BUGFIX] Fix Agent v6 and v7 install from beta repositories [#42][]
 * [BUGFIX] Fix checks config directory permissions [#45][]
+* [OTHER] Testing docs & scripts improvements [#44]
 * [OTHER] Do not import the old rpm GPG key if installing Agent v7 [#43][]
 * [OTHER] Unused variable cleanup [#36][]
 
