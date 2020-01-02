@@ -1,0 +1,41 @@
+version: 2
+
+jobs:
+  agent7_ubuntu:
+    docker:
+      - image: ubuntu:bionic-20191202
+    steps:
+      - checkout
+      - run: apt-get update && apt-get install -y curl
+      - run: cp test/utils/systemctl.py /bin/systemctl
+      - run: cp test/utils/systemctl.py /bin/systemd
+      - run: curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
+      - run: mkdir -p /etc/salt/minion.d && cp test/minion.d/masterless.conf /etc/salt/minion.d/
+      - run: mkdir -p /srv/pillar && cp -r test/pillar /srv/pillar
+      - run: mkdir -p /srv/salt && cp -r test/base /srv/salt/base
+      - run: mkdir -p /srv/salt/base && cp -r datadog /srv/salt/base/datadog
+      - run: salt-call --local state.highstate -l debug
+
+  agent7_centos:
+    docker:
+      - image: centos:7
+    steps:
+      - checkout
+      - run: yum -y update
+      - run: yum install -y curl
+      - run: cp test/utils/systemctl.py /usr/bin/systemctl
+      - run: cp test/utils/systemctl.py /usr/bin/systemd
+      - run: curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
+      - run: mkdir -p /etc/salt/minion.d && cp test/minion.d/masterless.conf /etc/salt/minion.d/
+      - run: mkdir -p /srv/pillar && cp -r test/pillar /srv/pillar
+      - run: mkdir -p /srv/salt && cp -r test/base /srv/salt/base
+      - run: mkdir -p /srv/salt/base && cp -r datadog /srv/salt/base/datadog
+      - run: salt-call --local state.highstate -l debug
+
+
+workflows:
+  version: 2
+  test_datadog_formula:
+    jobs:
+      - agent7_ubuntu
+      - agent7_centos
