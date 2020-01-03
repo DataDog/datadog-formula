@@ -29,12 +29,18 @@ datadog_yaml_installed:
 {% for check_name in datadog_checks %}
 
 {%- if latest_agent_version or parsed_version[1] != '5' %}
+# Make sure the check directory is present
 datadog_{{ check_name }}_folder_installed:
   file.directory:
     - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.d
     - user: dd-agent
     - group: root
     - mode: 700
+
+# Remove the old config file (if it exists)
+datadog_{{ check_name }}_old_yaml_removed:
+  file.absent:
+    - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.yaml
 {%- endif %}
 
 datadog_{{ check_name }}_yaml_installed:
