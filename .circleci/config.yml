@@ -1,4 +1,36 @@
-version: 2
+version: 2.1
+
+commands:
+  test_common:
+    steps:
+      - run: curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
+      - run: mkdir -p /etc/salt/minion.d && cp test/minion.d/masterless.conf /etc/salt/minion.d/
+      - run: mkdir -p /srv/pillar && cp -r test/pillar /srv/pillar
+      - run: mkdir -p /srv/salt && cp -r test/base /srv/salt/base
+      - run: mkdir -p /srv/salt/base && cp -r datadog /srv/salt/base/datadog
+      - run: salt-call --local state.highstate -l debug
+  test_ubuntu:
+    steps:
+      - run: apt-get update && apt-get install -y curl
+      - run: cp test/utils/systemctl.py /bin/systemctl
+      - run: cp test/utils/systemctl.py /bin/systemd
+      - test_common
+  test_centos:
+    steps:
+      - run: yum -y update
+      - run: yum install -y curl
+      - run: cp test/utils/systemctl.py /usr/bin/systemctl
+      - run: cp test/utils/systemctl.py /usr/bin/systemd
+      - test_common
+
+  setup_version:
+    parameters:
+      version:
+        type: string
+        default: "7"
+    steps:
+      - run: cp test/pillar/datadog{<<parameters.version>>,}.sls
+
 
 jobs:
   agent7_ubuntu:
@@ -6,35 +38,22 @@ jobs:
       - image: ubuntu:bionic-20191202
     steps:
       - checkout
-      - run: apt-get update && apt-get install -y curl
-      - run: cp test/utils/systemctl.py /bin/systemctl
-      - run: cp test/utils/systemctl.py /bin/systemd
-      - run: curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
-      - run: mkdir -p /etc/salt/minion.d && cp test/minion.d/masterless.conf /etc/salt/minion.d/
-      - run: mkdir -p /srv/pillar && cp -r test/pillar /srv/pillar
-      - run: mkdir -p /srv/salt && cp -r test/base /srv/salt/base
-      - run: mkdir -p /srv/salt/base && cp -r datadog /srv/salt/base/datadog
-      - run: salt-call --local state.highstate -l debug
+      - setup_version:
+        version: "7"
+      - test_ubuntu
 
   agent7_centos:
     docker:
       - image: centos:7
     steps:
       - checkout
-      - run: yum -y update
-      - run: yum install -y curl
-      - run: cp test/utils/systemctl.py /usr/bin/systemctl
-      - run: cp test/utils/systemctl.py /usr/bin/systemd
-      - run: curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
-      - run: mkdir -p /etc/salt/minion.d && cp test/minion.d/masterless.conf /etc/salt/minion.d/
-      - run: mkdir -p /srv/pillar && cp -r test/pillar /srv/pillar
-      - run: mkdir -p /srv/salt && cp -r test/base /srv/salt/base
-      - run: mkdir -p /srv/salt/base && cp -r datadog /srv/salt/base/datadog
-      - run: salt-call --local state.highstate -l debug
+      - setup_version:
+        version: "7"
+      - test_centos
 
 
 workflows:
-  version: 2
+  version: 2.1
   test_datadog_formula:
     jobs:
       - agent7_ubuntu
