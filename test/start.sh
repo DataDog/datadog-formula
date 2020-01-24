@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Start masterless minion
+# Install & uninstall datadog-agent
 salt-call --local state.highstate -l debug
 
 echo "==== Done ===="
-
 sleep infinity

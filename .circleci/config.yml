@@ -1,0 +1,171 @@
+version: 2.1
+
+commands:
+  setup_common:
+    steps:
+      - run: curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
+      - run: mkdir -p /etc/salt/minion.d && cp test/minion.d/masterless.conf /etc/salt/minion.d/
+      - run: mkdir -p /srv/pillar && cp -r test/pillar /srv/
+      - run: mkdir -p /srv/salt && cp -r test/base /srv/salt/
+      - run: mkdir -p /srv/salt/base && cp -r datadog /srv/salt/base/
+
+  setup_installed_version:
+    parameters:
+      version:
+        type: string
+        default: "7"
+    steps:
+      - run: cp test/pillar/datadog{<<parameters.version>>,}.sls
+
+  setup_ubuntu:
+    steps:
+      - run: apt-get update && apt-get install -y curl
+      - run: cp test/utils/systemctl.py /bin/systemctl
+      - run: cp test/utils/systemctl.py /bin/systemd
+      - setup_common
+
+  setup_centos:
+    steps:
+      - run: yum -y update
+      - run: yum install -y curl
+      - run: cp test/utils/systemctl.py /usr/bin/systemctl
+      - run: cp test/utils/systemctl.py /usr/bin/systemd
+      - setup_common
+
+  install:
+    steps:
+      - run: cp /srv/salt/base/top{_install,}.sls
+      - run: salt-call --local state.highstate -l debug
+  
+  check_installed_version:
+    parameters:
+      version:
+        type: string
+        default: "7"
+      repo_type:
+        type: string
+        default: "apt"
+    steps:
+      - run: python test/utils/check_<<parameters.repo_type>>_install.py --major-version <<parameters.version>>
+
+  uninstall:
+    steps:
+      - run: cp /srv/salt/base/top{_uninstall,}.sls
+      - run: salt-call --local state.highstate -l debug
+
+  check_uninstalled:
+    parameters:
+      repo_type:
+        type: string
+        default: "apt"
+    steps:
+      - run: python test/utils/check_<<parameters.repo_type>>_install.py --not-installed
+
+jobs:
+  agent7_ubuntu:
+    docker:
+      - image: ubuntu:bionic-20191202
+    steps:
+      - checkout
+      - setup_installed_version:
+          version: "7"
+      - setup_ubuntu
+      - install
+      - check_installed_version:
+          version: "7"
+          repo_type: "apt"
+      - uninstall
+      - check_uninstalled:
+          repo_type: "apt"
+
+  agent7_centos:
+    docker:
+      - image: centos:7
+    steps:
+      - checkout
+      - setup_installed_version:
+          version: "7"
+      - setup_centos
+      - install
+      - check_installed_version:
+          version: "7"
+          repo_type: "yum"
+      - uninstall
+      - check_uninstalled:
+          repo_type: "yum"
+
+  agent6_ubuntu:
+    docker:
+      - image: ubuntu:bionic-20191202
+    steps:
+      - checkout
+      - setup_installed_version:
+          version: "6"
+      - setup_ubuntu
+      - install
+      - check_installed_version:
+          version: "6"
+          repo_type: "apt"
+      - uninstall
+      - check_uninstalled:
+          repo_type: "apt"
+
+  agent6_centos:
+    docker:
+      - image: centos:7
+    steps:
+      - checkout
+      - setup_installed_version:
+          version: "6"
+      - setup_centos
+      - install
+      - check_installed_version:
+          version: "6"
+          repo_type: "yum"
+      - uninstall
+      - check_uninstalled:
+          repo_type: "yum"
+
+  agent5_ubuntu:
+    docker:
+      - image: ubuntu:bionic-20191202
+    steps:
+      - checkout
+      - setup_installed_version:
+          version: "5"
+      - setup_ubuntu
+      - install
+      - check_installed_version:
+          version: "5"
+          repo_type: "apt"
+      - uninstall
+      - check_uninstalled:
+          repo_type: "apt"
+
+  agent5_centos:
+    docker:
+      - image: centos:7
+    steps:
+      - checkout
+      - setup_installed_version:
+          version: "5"
+      - setup_centos
+      - install
+      - check_installed_version:
+          version: "5"
+          repo_type: "yum"
+      - uninstall
+      - check_uninstalled:
+          repo_type: "yum"
+
+
+workflows:
+  version: 2.1
+  test_datadog_formula:
+    jobs:
+      - agent7_ubuntu
+      - agent7_centos
+      - agent6_ubuntu
+      - agent6_centos
+      - agent5_ubuntu
+      - agent5_centos
