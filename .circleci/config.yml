@@ -5,9 +5,11 @@ commands:
     steps:
       - run: curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
       - run: mkdir -p /etc/salt/minion.d && cp test/minion.d/masterless.conf /etc/salt/minion.d/
-      - run: mkdir -p /srv/pillar && cp -r test/pillar /srv/pillar
-      - run: mkdir -p /srv/salt && cp -r test/base /srv/salt/base
-      - run: mkdir -p /srv/salt/base && cp -r datadog /srv/salt/base/datadog
+      - run: mkdir -p /srv/pillar && cp -r test/pillar /srv/
+      - run: mkdir -p /srv/salt && cp -r test/base /srv/salt/
+      - run: mkdir -p /srv/salt/base && cp -r datadog /srv/salt/base/
+      - run: ls /srv/pillar/
+      - run: cat /srv/pillar/datadog.sls
       - run: salt-call --local state.highstate -l debug
   test_ubuntu:
     steps:
@@ -39,7 +41,7 @@ jobs:
     steps:
       - checkout
       - setup_version:
-        version: "7"
+          version: "7"
       - test_ubuntu
 
   agent7_centos:
@@ -48,7 +50,43 @@ jobs:
     steps:
       - checkout
       - setup_version:
-        version: "7"
+          version: "7"
+      - test_centos
+
+  agent6_ubuntu:
+    docker:
+      - image: ubuntu:bionic-20191202
+    steps:
+      - checkout
+      - setup_version:
+          version: "6"
+      - test_ubuntu
+
+  agent6_centos:
+    docker:
+      - image: centos:7
+    steps:
+      - checkout
+      - setup_version:
+          version: "6"
+      - test_centos
+
+  agent5_ubuntu:
+    docker:
+      - image: ubuntu:bionic-20191202
+    steps:
+      - checkout
+      - setup_version:
+          version: "5"
+      - test_ubuntu
+
+  agent5_centos:
+    docker:
+      - image: centos:7
+    steps:
+      - checkout
+      - setup_version:
+          version: "5"
       - test_centos
 
 
@@ -58,3 +96,7 @@ workflows:
     jobs:
       - agent7_ubuntu
       - agent7_centos
+      - agent6_ubuntu
+      - agent6_centos
+      - agent5_ubuntu
+      - agent5_centos
