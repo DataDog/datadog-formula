@@ -2,7 +2,7 @@ datadog:
   config:
     api_key: aaaaaaaabbbbbbbbccccccccdddddddd
     site: datadoghq.com
-    python_version: 2
+    python_version: 3
 
   checks:
     process:

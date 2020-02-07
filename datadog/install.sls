@@ -6,6 +6,7 @@ datadog-apt-https:
     - name: apt-transport-https
 {%- endif %}
 
+{%- if grains['os_family'].lower() != 'freebsd' %}
 datadog-repo:
   pkgrepo.managed:
     - humanname: "Datadog, Inc."
@@ -60,6 +61,7 @@ datadog-repo:
     {%- endif %}
     - sslverify: '1'
     {% endif %}
+{%- endif %}
 
 datadog-pkg:
   pkg.installed:
@@ -70,8 +72,12 @@ datadog-pkg:
     - version: 1:{{ datadog_install_settings.agent_version }}-1
     {%- elif grains['os_family'].lower() == 'redhat' %}
     - version: {{ datadog_install_settings.agent_version }}-1
+    {%- elif grains['os_family'].lower() == 'freebsd' %}
+    - version: {{ datadog_install_settings.agent_version }}-1
     {%- endif %}
     - ignore_epoch: True
     - refresh: True
+    {%- if grains['os_family'].lower() != 'freebsd' %}
     - require:
       - pkgrepo: datadog-repo
+    {%- endif %}
