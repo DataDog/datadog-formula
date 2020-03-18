@@ -1,6 +1,7 @@
 {% set os_family_map = salt['grains.filter_by']({
       'Debian': {},
       'RedHat': {},
+      'FreeBSD': {},
     },
     grain="os_family")
 %}
@@ -35,6 +36,8 @@
 {# Determine defaults depending on specified version #}
 {%- if latest_agent_version or parsed_version[1] != '5' %}
     {% do datadog_install_settings.update({'config_folder': '/etc/datadog-agent'}) %}
+{%- elif grains['os_family'].lower() == 'freebsd' %}
+    {% do datadog_install_settings.update({'config_folder': '/usr/local/etc/datadog'}) %}
 {%- else %}
     {% do datadog_install_settings.update({'config_folder': '/etc/dd-agent'}) %}
 {%- endif %}
@@ -50,6 +53,8 @@
 {%- else %}
     {%- if latest_agent_version or parsed_version[1] != '5' %}
         {% do datadog_install_settings.update({'confd_path': '/etc/datadog-agent/conf.d'}) %}
+    {%- elif grains['os_family'].lower() == 'freebsd' %}
+        {% do datadog_install_settings.update({'confd_path': '/usr/local/etc/datadog/conf.d'}) %}
     {%- else %}
         {% do datadog_install_settings.update({'confd_path': '/etc/dd-agent/conf.d'}) %}
     {%- endif %}
