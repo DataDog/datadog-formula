@@ -1,4 +1,0 @@
-base:
-  '*':
-    - datadog
-    - datadog.uninstall
