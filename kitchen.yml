@@ -117,4 +117,3 @@ suites:
         - path: test/integration/default
       inputs:
         version: 7
-
