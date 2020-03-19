@@ -76,7 +76,7 @@ suites:
         datadog.sls: test/salt/pillar/datadog5.sls
     verifier:
       inspec_tests:
-        - path: test/integration/datadog
+        - path: test/integration/default
       inputs:
         version: 5
 
@@ -95,7 +95,7 @@ suites:
         datadog.sls: test/salt/pillar/datadog6.sls
     verifier:
       inspec_tests:
-        - path: test/integration/datadog
+        - path: test/integration/default
       inputs:
         version: 6
 
@@ -114,7 +114,7 @@ suites:
         datadog.sls: test/salt/pillar/datadog7.sls
     verifier:
       inspec_tests:
-        - path: test/integration/datadog
+        - path: test/integration/default
       inputs:
-        version: 6
+        version: 7
 

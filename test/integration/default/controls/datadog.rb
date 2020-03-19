@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Get datadog major as input variable
 datadog_version = input('version')
 
@@ -61,4 +63,3 @@ else
     its('group') { should eq 'dd-agent' }
   end
 end
-
