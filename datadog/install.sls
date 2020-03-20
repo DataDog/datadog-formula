@@ -73,7 +73,7 @@ datadog-pkg:
     {%- elif grains['os_family'].lower() == 'redhat' %}
     - version: {{ datadog_install_settings.agent_version }}-1
     {%- elif grains['os_family'].lower() == 'freebsd' %}
-    - version: {{ datadog_install_settings.agent_version }}-1
+    - version: {{ datadog_install_settings.agent_version }}_1
     {%- endif %}
     - ignore_epoch: True
     - refresh: True
