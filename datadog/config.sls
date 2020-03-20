@@ -8,7 +8,7 @@ datadog_conf_installed:
     - source: salt://datadog/files/datadog.conf.jinja
     - user: dd-agent
     - group: dd-agent
-    - mode: 600
+    - mode: '0600'
     - template: jinja
     - require:
       - pkg: datadog-pkg
@@ -19,7 +19,7 @@ datadog_yaml_installed:
     - source: salt://datadog/files/datadog.yaml.jinja
     - user: dd-agent
     - group: dd-agent
-    - mode: 600
+    - mode: '0600'
     - template: jinja
     - require:
       - pkg: datadog-pkg
@@ -34,8 +34,8 @@ datadog_{{ check_name }}_folder_installed:
   file.directory:
     - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.d
     - user: dd-agent
-    - group: root
-    - mode: 700
+    - group: {{ datadog_config.root_group }}
+    - mode: '0700'
 
 # Remove the old config file (if it exists)
 datadog_{{ check_name }}_old_yaml_removed:
@@ -52,8 +52,8 @@ datadog_{{ check_name }}_yaml_installed:
     {%- endif %}
     - source: salt://datadog/files/conf.yaml.jinja
     - user: dd-agent
-    - group: root
-    - mode: 600
+    - group: {{ datadog_config.root_group }}
+    - mode: '0600'
     - template: jinja
     - context:
         check_name: {{ check_name }}
