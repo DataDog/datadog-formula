@@ -64,17 +64,20 @@ datadog-repo:
 {%- endif %}
 
 datadog-pkg:
+  {%- if latest_agent_version %}
+  pkg.latest:
+    - name: datadog-agent
+  {%- else %}
   pkg.installed:
     - name: datadog-agent
-    {%- if latest_agent_version %}
-    - version: 'latest'
-    {%- elif grains['os_family'].lower() == 'debian' %}
+    {%- if grains['os_family'].lower() == 'debian' %}
     - version: 1:{{ datadog_install_settings.agent_version }}-1
     {%- elif grains['os_family'].lower() == 'redhat' %}
     - version: {{ datadog_install_settings.agent_version }}-1
     {%- elif grains['os_family'].lower() == 'freebsd' %}
-    - version: {{ datadog_install_settings.agent_version }}-1
+    - version: {{ datadog_install_settings.agent_version }}
     {%- endif %}
+  {%- endif %}
     - ignore_epoch: True
     - refresh: True
     {%- if grains['os_family'].lower() != 'freebsd' %}
