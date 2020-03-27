@@ -16,6 +16,9 @@
                 'prefix': '/usr/local',
                 'root_group': 'wheel',
             },
+            'install_settings': {
+              'services': ['datadog-agent-trace', 'datadog-agent-process']
+            },
         },
     },
     grain="os_family")
@@ -25,8 +28,10 @@
     'datadog': {
         'config': {},
         'checks': {},
+        'services': [],
         'install_settings': {
             'agent_version': 'latest',
+            'services': ['datadog-agent']
         },
     }
 } %}
