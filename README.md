@@ -1,8 +1,37 @@
-Datadog Formula
-===============
+# Datadog Formula
 
-SaltStack Formula to install the Datadog Agent and the Agent based integrations,
-also called Checks. See the full `Salt Formulas installation and usage instructions <http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+The Datadog SaltStack formula is used to install the Datadog Agent and the Agent based integrations (checks). For more details SaltStack formulas, see the [Salt formulas installation and usage instructions][1].
+
+## Setup
+
+### Requirements
+
+xxx
+
+### Installation
+
+Install the Datadog formula on your Salt master node, using the `gitfs_remotes` option in your Salt master configuration file (`/etc/salt/master` by default):
+
+```text
+gitfs_remotes:
+  - https://github.com/DataDog/datadog-formula.git:
+    - ref: 3.0 # Pin here the version of the formula you want to use
+```
+
+Alternatively, clone the Datadog formula on your Salt master node:
+
+```shell
+mkdir -p /srv/formulas && cd /srv/formulas
+git clone https://github.com/DataDog/datadog-formula.git
+```
+
+Then, add it to the `file_roots` of your Salt Master configuration file (by default /etc/salt/master):
+
+```text
+file_roots:
+  - /srv/salt/
+  - /srv/formulas/datadog-formula/
+```
 
 Available States
 ================
@@ -107,46 +136,5 @@ Example: ``directory`` check version ``1.4.0``, monitoring the ``/srv/pillar`` d
               name: "pillars"
         version: 1.4.0
 
-Development
-===========
 
-To ease the development of the formula, you can use Docker and Docker Compose with
-the compose file in `test/docker-compose.yaml`.
-
-First, build and run a Docker container to create a masterless SaltStack minion. You have the option of choosing either
-a Debian- or Redhat-based minion. Then, get a shell running in the container.
-
-.. code-block:: shell
-
-    $ cd test/
-    $ TEST_DIST=debian docker-compose run masterless /bin/bash
-
-Once you've built the container and have a shell up and running, you need to apply the SaltStack state on your minion:
-
-.. code-block:: shell
-
-    $ # On your SaltStack minion
-    $ salt-call --local state.highstate -l debug
-
-Testing
-=========
-
-A proper integration test suite is still a Work in Progress, in the meantime you
-can use the Docker Compose file provided in the `test` directory to easily check
-out the formula in action.
-
-Requirements
-------------
-
-* Docker
-* Docker Compose
-
-Run the formula
----------------
-
-.. code-block:: shell
-
-    $ cd test/
-    $ TEST_DIST=debian docker-compose up --build
-
-You should be able to see from the logs if all the states completed successfully.
+[1]: http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html
