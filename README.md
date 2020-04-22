@@ -10,12 +10,12 @@ xxx
 
 ### Installation
 
-Install the Datadog formula on your Salt master node, using the `gitfs_remotes` option in your Salt master configuration file (`/etc/salt/master` by default):
+Install the Datadog formula on your Salt master node, using the `gitfs_remotes` option in your Salt master configuration file (defaults to `/etc/salt/master`):
 
 ```text
 gitfs_remotes:
   - https://github.com/DataDog/datadog-formula.git:
-    - ref: 3.0 # Pin here the version of the formula you want to use
+    - ref: 3.0 # Pin the version of the formula you want to use
 ```
 
 Alternatively, clone the Datadog formula on your Salt master node:
@@ -25,13 +25,58 @@ mkdir -p /srv/formulas && cd /srv/formulas
 git clone https://github.com/DataDog/datadog-formula.git
 ```
 
-Then, add it to the `file_roots` of your Salt Master configuration file (by default /etc/salt/master):
+Then, add it to the `file_roots` of your Salt master configuration file (defaults to `/etc/salt/master`):
 
 ```text
 file_roots:
   - /srv/salt/
   - /srv/formulas/datadog-formula/
 ```
+
+### Deployment
+
+To deploy the Datadog Agent on your hosts:
+
+1. Add the Datadog formula to your top file (defaults to `/srv/salt/top.sls`):
+
+    ```text
+    base:
+      '*':
+        - datadog
+    ```
+
+2. Add `datadog.sls` to your pillar directory (defaults to `/srv/pillar/`) with your [Datadog API key][2]:
+
+    ```text
+    datadog:
+      config:
+        api_key: <YOUR_DD_API_KEY>
+    ```
+
+3. Add `datadog.sls` to the top pillar file (defaults to `/srv/pillar/top.sls`):
+
+    ```text
+    base:
+      '*':
+        - datadog
+    ```
+
+### Integrations
+
+To add an Agent integration to your host, use the checks variable. Below is an example for the [Directory][3] integration:
+
+```text
+datadog:
+  config:
+    api_key: <YOUR_DD_API_KEY>
+  checks:
+    directory:
+      config:
+        instances:
+          - directory: "/srv/pillar"
+            name: "pillars"
+```
+
 
 Available States
 ================
@@ -138,3 +183,5 @@ Example: ``directory`` check version ``1.4.0``, monitoring the ``/srv/pillar`` d
 
 
 [1]: http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html
+[2]: https://app.datadoghq.com/account/settings#api
+[3]: https://docs.datadoghq.com/integrations/directory/
