@@ -1,6 +1,6 @@
 # Datadog Formula
 
-The Datadog SaltStack formula is used to install the Datadog Agent and the Agent based integrations (checks). For more details on SaltStack formulas, see the [Salt formulas installation and usage instructions][1].
+The Datadog SaltStack formula is used to install the Datadog Agent and the Agent-based integrations (checks). For more details on SaltStack formulas, see the [Salt formulas installation and usage instructions][1].
 
 ## Setup
 ### Installation
@@ -40,7 +40,7 @@ To deploy the Datadog Agent on your hosts:
         - datadog
     ```
 
-2. Add `datadog.sls` to your pillar directory (defaults to `/srv/pillar/`) with your [Datadog API key][2]:
+2. Create `datadog.sls` in your pillar directory (defaults to `/srv/pillar/`). Add the following and update your [Datadog API key][2]:
 
     ```text
     datadog:
@@ -62,15 +62,14 @@ The formula configuration must be written in the `datadog` key of the pillar fil
 
 #### Config
 
-The `config` option contains the configuration options which will be written in the minions' Agent configuration file (``datadog.yaml`` for Agent v6 & v7, ``datadog.conf`` for Agent v5).
+Under `config`, add the configuration options to write to the minions' Agent configuration file (`datadog.yaml` for Agent v6 & v7, `datadog.conf` for Agent v5).
 
 Depending on the Agent version installed, different options can be set:
 
 - Agent v6 & v7: all options supported by the Agent's configuration file are supported.
 - Agent v5: only the `api_key` option is supported.
 
-Example: Set the API key, and the site option to ``datadoghq.eu`` (Agent v6 only)
-
+The example below sets your Datadog API key and the Datadog site to `datadoghq.eu` (available for Agent v6 & v7).
 
 ```text
   datadog:
@@ -81,11 +80,11 @@ Example: Set the API key, and the site option to ``datadoghq.eu`` (Agent v6 only
 
 #### Install settings
 
-The `install_settings` option contains the Agent installation configuration options. It has the following option:
+Under `install_settings`, configure the Agent installation option:
 
-- ``agent_version``: The version of the Agent to install (defaults to the latest version of Agent 7).
+- `agent_version`: The version of the Agent to install (defaults to the latest Agent v7).
 
-Example: install the Agent version ``6.``
+The example below installs Agent v6.14.1:
 
 ```text
   datadog:
@@ -95,16 +94,14 @@ Example: install the Agent version ``6.``
 
 #### Integrations
 
-To add an Agent integration to your host, use the `checks` variable with the check's name as the key.
+To add an Agent integration to your host, use the `checks` variable with the check's name as the key. Each check has two options:
 
-Each check has two options:
+| Option    | Description                                                                                                                                                             |
+|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `config`  | Add the configuration options to write to the check's configuration file:<br>Agent v6 & v7: `<confd_path>/<check>.d/conf.yaml`<br>Agent v5: `<confd_path>/<check>.yaml` |
+| `version` | For Agent v6 & v7, the version of the check to install (defaults to the version bundled with the Agent).                                                                |
 
-- `config`: Contains the check's configuration, which will be written to the check's configuration file (``<confd_path>/<check>.d/conf.yaml`` for Agent v6/v7, ``<confd_path>/<check>.yaml`` for Agent v5).
-- `version`: For Agent v6 and v7, the version of the check to install (defaults to the version bundled with the Agent).
-
-Example: ``directory`` check version ``1.4.0``, monitoring the ``/srv/pillar`` directory
-
-Below is an example for the [Directory][3] integration:
+Below is an example for the using v1.4.0 of the [Directory][3] integration monitoring the `/srv/pillar` directory:
 
 ```text
 datadog:
@@ -121,17 +118,17 @@ datadog:
 
 ## States
 
-The following states are available:
+Salt formulas are pre-written Salt states. The following states are available in the Datadog formula:
 
 | State               | Description                                                                                             |
 |---------------------|---------------------------------------------------------------------------------------------------------|
 | `datadog`           | Installs, configures, and starts the Datadog Agent service.                                             |
-| `datadog.install`   | Configure the right repo and installs the Agent.                                                        |
-| `datadog.config`    | Configures the Agent and integrations using pillar data (see [pillar.example][4]).                      |
+| `datadog.install`   | Configures the correct repo and installs the Datadog Agent.                                             |
+| `datadog.config`    | Configures the Datadog Agent and integrations using pillar data (see [pillar.example][4]).              |
 | `datadog.service`   | Runs the Datadog Agent service, which watches for changes to the config files for the Agent and checks. |
 | `datadog.uninstall` | Stops the service and uninstalls the Datadog Agent.                                                     |
 
-**NOTE**: When using `datadog.config` to configure different check instances on different machines, the `pillar_merge_lists` option must be set to `True` in the Salt master config or the Salt minion config if running masterless (see the [SaltStack documentation][5]).
+**NOTE**: When using `datadog.config` to configure different check instances on different machines, the `pillar_merge_lists` option must be set to `True` in the Salt master config or the Salt minion config if running masterless. See the [SaltStack documentation][5] for more details.
 
 [1]: http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html
 [2]: https://app.datadoghq.com/account/settings#api
