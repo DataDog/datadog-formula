@@ -42,7 +42,7 @@ Rebase your changes on `master` and squash your commits whenever possible. This 
 To ease the development of this formula, use Docker and Docker Compose with the compose file in `test/docker-compose.yaml`.
 
 First, build and run a Docker container to create a masterless SaltStack minion. You have the option of choosing either
-a Debian or Redhat-based minion. Then, get a shell running in the container.
+a Debian or Red Hat-based minion. Then, get a shell running in the container.
 
 ```shell
     $ cd test/
