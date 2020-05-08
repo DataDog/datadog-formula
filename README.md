@@ -3,15 +3,40 @@
 The Datadog SaltStack formula is used to install the Datadog Agent and the Agent-based integrations (checks). For more details on SaltStack formulas, see the [Salt formulas installation and usage instructions][1].
 
 ## Setup
+
+### Requirements
+
+The Datadog SaltStack formula only supports installs on Debian-based and RedHat-based systems.
+
 ### Installation
 
-Install the Datadog formula on your Salt master node, using the `gitfs_remotes` option in your Salt master configuration file (defaults to `/etc/salt/master`):
+The following instructions add the Datadog formula to the `base` Salt environment. To add it to another Salt environment, change the `base` references to the name of your Salt environment.
+
+#### Option 1
+
+Install the [Datadog formula][6] in the base environment of your Salt master node, using the `gitfs_remotes` option in your Salt master configuration file (defaults to `/etc/salt/master`):
 
 ```text
+fileserver_backend:
+  - roots # Active by default, necessary to be able to use the local salt files we define in the next steps
+  - gitfs # Adds gitfs as a fileserver backend to be able to use gitfs_remotes
+
 gitfs_remotes:
   - https://github.com/DataDog/datadog-formula.git:
-    - ref: 3.0 # Pin the version of the formula you want to use
+    - saltenv:
+      - base:
+        - ref: 3.0 # Pin the version of the formula you want to use
 ```
+
+Then restart your Salt Master service to apply the configuration changes:
+
+```shell
+systemctl restart salt-master
+# OR
+service salt-master restart
+```
+
+#### Option 2
 
 Alternatively, clone the Datadog formula on your Salt master node:
 
@@ -20,12 +45,13 @@ mkdir -p /srv/formulas && cd /srv/formulas
 git clone https://github.com/DataDog/datadog-formula.git
 ```
 
-Then, add it to the `file_roots` of your Salt master configuration file (defaults to `/etc/salt/master`):
+Then, add it to the base environment under `file_roots` of your Salt master configuration file (defaults to `/etc/salt/master`):
 
 ```text
 file_roots:
-  - /srv/salt/
-  - /srv/formulas/datadog-formula/
+  base:
+    - /srv/salt/
+    - /srv/formulas/datadog-formula/
 ```
 
 ### Deployment
@@ -42,10 +68,12 @@ To deploy the Datadog Agent on your hosts:
 
 2. Create `datadog.sls` in your pillar directory (defaults to `/srv/pillar/`). Add the following and update your [Datadog API key][2]:
 
-    ```text
+    ```
     datadog:
       config:
         api_key: <YOUR_DD_API_KEY>
+      install_settings:
+        agent_version: <AGENT7_VERSION>
     ```
 
 3. Add `datadog.sls` to the top pillar file (defaults to `/srv/pillar/top.sls`):
@@ -107,6 +135,8 @@ Below is an example for the using v1.4.0 of the [Directory][3] integration monit
 datadog:
   config:
     api_key: <YOUR_DD_API_KEY>
+  install_settings:
+    agent_version: <AGENT7_VERSION>
   checks:
     directory:
       config:
@@ -135,3 +165,4 @@ Salt formulas are pre-written Salt states. The following states are available in
 [3]: https://docs.datadoghq.com/integrations/directory/
 [4]: https://github.com/DataDog/datadog-formula/blob/master/pillar.example
 [5]: https://docs.saltstack.com/en/latest/ref/configuration/master.html#pillar-merge-lists
+[6]: https://github.com/DataDog/datadog-formula
