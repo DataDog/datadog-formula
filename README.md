@@ -129,7 +129,7 @@ To add an Agent integration to your host, use the `checks` variable with the che
 | `config`  | Add the configuration options to write to the check's configuration file:<br>Agent v6 & v7: `<confd_path>/<check>.d/conf.yaml`<br>Agent v5: `<confd_path>/<check>.yaml` |
 | `version` | For Agent v6 & v7, the version of the check to install (defaults to the version bundled with the Agent).                                                                |
 
-Below is an example for the using v1.4.0 of the [Directory][3] integration monitoring the `/srv/pillar` directory:
+Below is an example to use v1.4.0 of the [Directory][3] integration monitoring the `/srv/pillar` directory:
 
 ```text
 datadog:
