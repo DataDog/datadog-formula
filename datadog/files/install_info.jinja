@@ -1,0 +1,6 @@
+{% from "datadog/map.jinja" import formula_version -%}
+---
+install_method:
+  tool: saltstack
+  tool_version: saltstack-{{ salt.get('salt_version', 'unknown') }}
+  installer_version: datadog_formula-{{ formula_version  }}

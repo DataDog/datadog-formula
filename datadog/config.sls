@@ -68,3 +68,15 @@ datadog_{{ check_name }}_version_{{ datadog_checks[check_name].version }}_instal
 
 {% endfor %}
 {% endif %}
+
+{% set install_info_path = '%s/install_info'|format(datadog_install_settings.config_folder) -%}
+install_info_installed:
+  file.managed:
+    - name: {{ install_info_path }}
+    - source: salt://datadog/files/install_info.jinja
+    - user: dd-agent
+    - group: dd-agent
+    - mode: 600
+    - template: jinja
+    - require:
+      - pkg: datadog-pkg
