@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import yum, sys
-from helpers import get_options, check_major_version
+from helpers import get_options, check_major_version, check_install_info
 
 def get_yum_package_version(package_name):
   yb = yum.YumBase()
@@ -25,10 +25,22 @@ def main(argv):
   result = check_major_version(installed_version, expected_major_version)
   if result:
     print("Agent version check successful!")
-    sys.exit()
   else:
     print("Agent version check failed.")
     sys.exit(1)
+
+  # expected_major_version
+  if expected_major_version:
+    if check_install_info(expected_major_version):
+      print("install_info check successful!")
+      sys.exit()
+    else:
+      print("install_info check failed")
+      sys.exit(1)
+  else:
+    print("Skipping install_info check")
+    sys.exit()
+
 
 if __name__ == "__main__":
   main(sys.argv)
