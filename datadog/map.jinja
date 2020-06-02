@@ -1,6 +1,25 @@
 {% set os_family_map = salt['grains.filter_by']({
-      'Debian': {},
-      'RedHat': {},
+        'Debian': {
+            'config': {
+                'prefix': '',
+                'root_group': 'root',
+            },
+        },
+        'RedHat': {
+            'config': {
+                'prefix': '',
+                'root_group': 'root',
+            },
+        },
+        'FreeBSD': {
+            'config': {
+                'prefix': '/usr/local',
+                'root_group': 'wheel',
+            },
+            'install_settings': {
+              'services': ['datadog-agent-trace', 'datadog-agent-process']
+            },
+        },
     },
     grain="os_family")
 %}
@@ -9,11 +28,13 @@
     'datadog': {
         'config': {},
         'checks': {},
+        'services': [],
         'install_settings': {
             'agent_version': 'latest',
+            'services': ['datadog-agent']
         },
     }
-}%}
+} %}
 
 {# Merge os_family_map into the default settings #}
 {% do default_settings.datadog.update(os_family_map) %}
@@ -34,9 +55,9 @@
 
 {# Determine defaults depending on specified version #}
 {%- if latest_agent_version or parsed_version[1] != '5' %}
-    {% do datadog_install_settings.update({'config_folder': '/etc/datadog-agent'}) %}
+    {% do datadog_install_settings.update({'config_folder': datadog_config.prefix ~ '/etc/datadog-agent'}) %}
 {%- else %}
-    {% do datadog_install_settings.update({'config_folder': '/etc/dd-agent'}) %}
+    {% do datadog_install_settings.update({'config_folder': datadog_config.prefix ~ '/etc/dd-agent'}) %}
 {%- endif %}
 
 {%- if latest_agent_version or parsed_version[1] != '5' %}
@@ -49,8 +70,8 @@
     {% do datadog_install_settings.update({'confd_path': datadog_config.confd_path }) %}
 {%- else %}
     {%- if latest_agent_version or parsed_version[1] != '5' %}
-        {% do datadog_install_settings.update({'confd_path': '/etc/datadog-agent/conf.d'}) %}
+        {% do datadog_install_settings.update({'confd_path': datadog_config.prefix ~ '/etc/datadog-agent/conf.d'}) %}
     {%- else %}
-        {% do datadog_install_settings.update({'confd_path': '/etc/dd-agent/conf.d'}) %}
+        {% do datadog_install_settings.update({'confd_path': datadog_config.prefix ~ '/etc/dd-agent/conf.d'}) %}
     {%- endif %}
 {%- endif %}
