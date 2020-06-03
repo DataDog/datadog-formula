@@ -41,10 +41,10 @@ def main(argv):
       print("install_info check successful!")
       sys.exit()
     else:
-      print("install_info check failed")
+      print("install_info check failed.")
       sys.exit(1)
   else:
-    print("Skipping install_info check")
+    print("Skipping install_info check.")
     sys.exit()
 
 
