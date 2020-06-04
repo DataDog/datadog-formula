@@ -39,13 +39,13 @@ def main(argv):
   if expected_major_version:
     if check_install_info(expected_major_version):
       print("install_info check successful!")
-      sys.exit()
     else:
       print("install_info check failed.")
       sys.exit(1)
   else:
     print("Skipping install_info check.")
-    sys.exit()
+
+  sys.exit()
 
 
 if __name__ == "__main__":

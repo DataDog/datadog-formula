@@ -15,6 +15,7 @@ def get_yum_package_version(package_name):
   
   return installed_version
 
+
 def main(argv):
   expected_major_version = get_options(argv[1:])
   print("Expected major version: {}".format(expected_major_version))
@@ -33,13 +34,13 @@ def main(argv):
   if expected_major_version:
     if check_install_info(expected_major_version):
       print("install_info check successful!")
-      sys.exit()
     else:
       print("install_info check failed.")
       sys.exit(1)
   else:
     print("Skipping install_info check.")
-    sys.exit()
+
+  sys.exit()
 
 
 if __name__ == "__main__":
