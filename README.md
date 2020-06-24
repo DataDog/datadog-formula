@@ -120,7 +120,7 @@ The example below installs Agent v6.14.1:
       agent_version: 6.14.1
 ```
 
-#### Integrations
+#### Checks
 
 To add an Agent integration to your host, use the `checks` variable with the check's name as the key. Each check has two options:
 
@@ -145,6 +145,27 @@ datadog:
             name: "pillars"
       version: 1.4.0
 ```
+
+##### Logs
+
+To output logs, use the `logs` key to indicate you want to create a check named `logs`. Note that there is no specific restriction on the name of this check. You can name it `system_logs`, for instance, and log collection will still occur. This check will automatically create the `/etc/datadog-agent/conf.d/logs.d` directory.
+
+Below is an example configuration of a `logs` check with a `config` key:
+
+```text
+  checks:
+    logs:
+      config:
+        logs:
+          - type: file
+            path: "/var/log/syslog"
+            service: "system"
+          - type: file
+            path: "/var/log/auth.log"
+            service: "system"
+```
+
+You can use the config key of the this check to indicate the contents of `/etc/datadog-agent/conf.d/logs.d/conf.yaml`. This is where you put your config file contents. In the case of this example, the config file itself contains the `logs` key, which is why you have both an inner and an outer `logs` key if you also name your check "logs".
 
 ## States
 
