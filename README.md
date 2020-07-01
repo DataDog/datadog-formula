@@ -148,6 +148,12 @@ datadog:
 
 ##### Logs
 
+To enable log collection, set `logs_enabled` to `true` in the main configuration:
+```text
+datadog:
+  config:
+    logs_enabled: true```
+
 To send logs to Datadog, use the `logs` key in a check (either an existing check to setup logs for an integration, or a custom check to setup custom log collection). In the following example, we'll use a custom check named `system_logs`.
 
 The contents of the `config:` key of this check will be written to the `/etc/datadog-agent/conf.d/<check_name>.d/conf.yaml` file (in this example: `/etc/datadog-agent/conf.d/system_logs.d/conf.yaml`).
