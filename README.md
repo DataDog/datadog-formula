@@ -148,13 +148,19 @@ datadog:
 
 ##### Logs
 
-To output logs, use the `logs` key to indicate you want to create a check named `logs`. Note that there is no specific restriction on the name of this check. You can name it `system_logs`, for instance, and log collection will still occur. This check will automatically create the `/etc/datadog-agent/conf.d/logs.d` directory.
+To send logs to Datadog, use the `logs` key in a check (either an existing check to setup logs for an integration, or a custom check to setup custom log collection). In the following example, we'll use a custom check named `system_logs`.
 
-Below is an example configuration of a `logs` check with a `config` key:
+The contents of the `config:` key of this check will be written to the `/etc/datadog-agent/conf.d/<check_name>.d/conf.yaml` file (in this example: `/etc/datadog-agent/conf.d/system_logs.d/conf.yaml`).
+
+To list the logs you want to collect, fill the `config` section the same way you'd fill the `conf.yaml` file of a custom log collection configuration file (refer to the section on [custom log collection](https://docs.datadoghq.com/agent/logs/?tab=tailfiles#custom-log-collection) in the official docs).
+
+For instance, to collect logs from `/var/log/syslog` and `/var/log/auth.log`, the configuration would be:
 
 ```text
+datadog:
+[...]
   checks:
-    logs:
+    system_logs:
       config:
         logs:
           - type: file
@@ -165,7 +171,6 @@ Below is an example configuration of a `logs` check with a `config` key:
             service: "system"
 ```
 
-You can use the config key of the this check to indicate the contents of `/etc/datadog-agent/conf.d/logs.d/conf.yaml`. This is where you put your config file contents. In the case of this example, the config file itself contains the `logs` key, which is why you have both an inner and an outer `logs` key if you also name your check "logs".
 
 ## States
 
