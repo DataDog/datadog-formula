@@ -120,7 +120,7 @@ The example below installs Agent v6.14.1:
       agent_version: 6.14.1
 ```
 
-#### Integrations
+#### Checks
 
 To add an Agent integration to your host, use the `checks` variable with the check's name as the key. Each check has two options:
 
@@ -145,6 +145,39 @@ datadog:
             name: "pillars"
       version: 1.4.0
 ```
+
+##### Logs
+
+To enable log collection, set `logs_enabled` to `true` in the main configuration:
+```text
+datadog:
+  config:
+    logs_enabled: true
+```
+
+To send logs to Datadog, use the `logs` key in a check (either an existing check to setup logs for an integration, or a custom check to setup custom log collection). In the following example, we'll use a custom check named `system_logs`.
+
+The contents of the `config:` key of this check will be written to the `/etc/datadog-agent/conf.d/<check_name>.d/conf.yaml` file (in this example: `/etc/datadog-agent/conf.d/system_logs.d/conf.yaml`).
+
+To list the logs you want to collect, fill the `config` section the same way you'd fill the `conf.yaml` file of a custom log collection configuration file (refer to the section on [custom log collection](https://docs.datadoghq.com/agent/logs/?tab=tailfiles#custom-log-collection) in the official docs).
+
+For instance, to collect logs from `/var/log/syslog` and `/var/log/auth.log`, the configuration would be:
+
+```text
+datadog:
+[...]
+  checks:
+    system_logs:
+      config:
+        logs:
+          - type: file
+            path: "/var/log/syslog"
+            service: "system"
+          - type: file
+            path: "/var/log/auth.log"
+            service: "system"
+```
+
 
 ## States
 
