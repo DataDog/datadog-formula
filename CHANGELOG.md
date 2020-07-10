@@ -1,5 +1,11 @@
 # Changes
 
+## 2.2 / 2020-07-15
+
+* [BUGFIX] Put check config files in the `<check>.d/` directory on Agent v6 and v7 [#39][]
+* [BUGFIX] Fix checks config directory permissions [#45][]
+* [BUGFIX] Remove old check config file if check is installed with Agent 6/7 [#47][]
+
 ## 2.1 / 2019-08-27
 
 * [FEATURE] Add python_version option [#33][]
@@ -40,3 +46,6 @@
 [#31]: https://github.com/DataDog/datadog-formula/issues/31
 [#32]: https://github.com/DataDog/datadog-formula/issues/32
 [#33]: https://github.com/DataDog/datadog-formula/issues/33
+[#39]: https://github.com/DataDog/datadog-formula/issues/39
+[#45]: https://github.com/DataDog/datadog-formula/issues/45
+[#47]: https://github.com/DataDog/datadog-formula/issues/47
