@@ -61,7 +61,7 @@ datadog_{{ check_name }}_folder_installed:
     - name: {{ datadog_settings.checks_confd }}/{{ check_name }}.d
     - user: dd-agent
     - group: root
-    - mode: 600
+    - mode: 700
 
 # Remove the old config file (if it exists)
 datadog_{{ check_name }}_old_yaml_removed:
