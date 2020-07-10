@@ -1,4 +1,4 @@
-{% from "datadog/map.jinja" import datadog_settings with context %}
+{% from "datadog/map.jinja" import datadog_settings, latest_agent_version, parsed_version with context %}
 {% set config_file_path = '%s/%s'|format(datadog_settings.config_folder, datadog_settings.config_file) -%}
 {% set example_file_path = '%s.example'|format(config_file_path) -%}
 
@@ -53,9 +53,23 @@ datadog-conf-python-version:
 
 {% if datadog_settings.checks is defined %}
 {% for check_name in datadog_settings.checks %}
+
+{%- if latest_agent_version or parsed_version[1] != '5' %}
+datadog_{{ check_name }}_folder_installed:
+  file.directory:
+    - name: {{ datadog_settings.checks_confd }}/{{ check_name }}.d
+    - user: dd-agent
+    - group: root
+    - mode: 600
+{%- endif %}
+
 datadog_{{ check_name }}_yaml_installed:
   file.managed:
+    {%- if latest_agent_version or parsed_version[1] != '5' %}
+    - name: {{ datadog_settings.checks_confd }}/{{ check_name }}.d/conf.yaml
+    {%- else %}
     - name: {{ datadog_settings.checks_confd }}/{{ check_name }}.yaml
+    {%- endif %}
     - source: salt://datadog/files/conf.yaml.jinja
     - user: dd-agent
     - group: root
