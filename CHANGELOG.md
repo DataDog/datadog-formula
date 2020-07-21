@@ -1,6 +1,6 @@
 # Changes
 
-## 3.1 / 2020-07-17
+## 3.1 / 2020-07-21
 
 * [FEATURE] Create install info file [#52][]
 * [BUGFIX] Remove old check config file if check is installed with Agent 6/7 [#47][]
