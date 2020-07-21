@@ -1,5 +1,10 @@
 # Changes
 
+## 3.1 / 2020-07-21
+
+* [FEATURE] Create install info file [#52][]
+* [BUGFIX] Remove old check config file if check is installed with Agent 6/7 [#47][]
+
 ## 3.0 / 2019-12-18
 
 **This formula will install Agent v7 by default.** Datadog Agent v7 runs checks with Python 3, so if you were running any custom checks written in Python, they must be compatible with Python 3. If you were not running any custom checks or if your custom checks are already compatible with Python 3, then it is safe to upgrade to Agent v7.
@@ -65,3 +70,5 @@ This release contains breaking changes to the pillar file structure. Please read
 [#43]: https://github.com/DataDog/datadog-formula/issues/43
 [#44]: https://github.com/DataDog/datadog-formula/issues/44
 [#45]: https://github.com/DataDog/datadog-formula/issues/45
+[#47]: https://github.com/DataDog/datadog-formula/issues/47
+[#52]: https://github.com/DataDog/datadog-formula/issues/52
