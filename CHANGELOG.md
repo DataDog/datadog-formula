@@ -1,6 +1,6 @@
 # Changes
 
-## 2.2 / 2020-07-15
+## 2.2 / 2020-07-21
 
 * [BUGFIX] Put check config files in the `<check>.d/` directory on Agent v6 and v7 [#39][]
 * [BUGFIX] Fix checks config directory permissions [#45][]
