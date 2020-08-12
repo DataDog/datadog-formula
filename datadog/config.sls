@@ -61,7 +61,7 @@ datadog_{{ check_name }}_yaml_installed:
 {%- if latest_agent_version or parsed_version[1] != '5' %}
 {%- if datadog_checks[check_name].version is defined %}
 
-{%- if datadog_checks[check_name].third_party is defined and datadog_checks[check_name].third_party %}
+{%- if datadog_checks[check_name].third_party is defined and datadog_checks[check_name].third_party == true %}
 {% set install_command = "install --third-party" %}
 {%- else %}
 {% set install_command = "install" %}
