@@ -10,6 +10,13 @@ datadog:
         instances:
           - directory: "/srv/pillar"
             name: "pillars"
+    # Test installing a third-party integration
+    bind9:
+      config:
+        instances:
+          - {}
+      version: 0.1.0
+      third_party: true
 
   install_settings:
-    agent_version: 6.16.0
+    agent_version: 6.21.1
