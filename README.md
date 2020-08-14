@@ -128,6 +128,7 @@ To add an Agent integration to your host, use the `checks` variable with the che
 |-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `config`  | Add the configuration options to write to the check's configuration file:<br>Agent v6 & v7: `<confd_path>/<check>.d/conf.yaml`<br>Agent v5: `<confd_path>/<check>.yaml` |
 | `version` | For Agent v6 & v7, the version of the check to install (defaults to the version bundled with the Agent).                                                                |
+| `third_party` | For Agent v6 & v7 (versions v6.21.0/v7.21.0 and higher only), boolean to indicate that the integration to install is a third-party integration. Must be paired with the `version` option.                                                                |
 
 Below is an example to use v1.4.0 of the [Directory][3] integration monitoring the `/srv/pillar` directory:
 
@@ -144,6 +145,23 @@ datadog:
           - directory: "/srv/pillar"
             name: "pillars"
       version: 1.4.0
+```
+
+Below is an example to use v1.0.0 of a sample third-party integration named "third-party-integration":
+
+```
+datadog:
+  config:
+    api_key: <YOUR_DD_API_KEY>
+  install_settings:
+    agent_version: <AGENT7_VERSION>
+  checks:
+    third-party-integration:
+      config:
+        instances:
+          - some_config: "some value"
+      version: 1.0.0
+      third_party: true
 ```
 
 ##### Logs

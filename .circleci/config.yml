@@ -19,7 +19,7 @@ commands:
 
   setup_ubuntu:
     steps:
-      - run: apt-get update && apt-get install -y curl
+      - run: apt-get update && apt-get install -y curl sudo
       - run: cp test/utils/systemctl.py /bin/systemctl
       - run: cp test/utils/systemctl.py /bin/systemd
       - setup_common
@@ -27,7 +27,7 @@ commands:
   setup_centos:
     steps:
       - run: yum -y update
-      - run: yum install -y curl
+      - run: yum install -y curl sudo
       - run: cp test/utils/systemctl.py /usr/bin/systemctl
       - run: cp test/utils/systemctl.py /usr/bin/systemd
       - setup_common
