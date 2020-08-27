@@ -7,6 +7,7 @@ datadog-agent-service:
     - enable: True
     - watch:
       - pkg: datadog-agent
+      - cmd: datadog_check_*_version_*_installed
       - file: {{ config_file_path }}
 {%- if datadog_checks | length %}
       - file: {{ datadog_install_settings.confd_path }}/*
