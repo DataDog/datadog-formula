@@ -67,9 +67,10 @@ datadog_{{ check_name }}_yaml_installed:
 {% set install_command = "install" %}
 {%- endif %}
 
-datadog_{{ check_name }}_version_{{ datadog_checks[check_name].version }}_installed:
+datadog_check_{{ check_name }}_version_{{ datadog_checks[check_name].version }}_installed:
   cmd.run:
     - name: sudo -u dd-agent datadog-agent integration {{ install_command }} datadog-{{ check_name }}=={{ datadog_checks[check_name].version }}
+    - unless: sudo -u dd-agent datadog-agent integration freeze | grep datadog-{{ check_name }}=={{ datadog_checks[check_name].version }}
 {%- endif %}
 {%- endif %}
 
