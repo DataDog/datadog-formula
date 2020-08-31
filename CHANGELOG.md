@@ -1,5 +1,10 @@
 # Changes
 
+## 3.2 / 2020-08-31
+
+* [FEATURE] Allow installing third-party integrations [#57][] & [#58][]
+* [BUGFIX] Restart the datadog-agent service after an integration install [#59][]
+
 ## 3.1 / 2020-07-21
 
 * [FEATURE] Create install info file [#52][]
@@ -72,3 +77,6 @@ This release contains breaking changes to the pillar file structure. Please read
 [#45]: https://github.com/DataDog/datadog-formula/issues/45
 [#47]: https://github.com/DataDog/datadog-formula/issues/47
 [#52]: https://github.com/DataDog/datadog-formula/issues/52
+[#57]: https://github.com/DataDog/datadog-formula/issues/57
+[#58]: https://github.com/DataDog/datadog-formula/issues/58
+[#59]: https://github.com/DataDog/datadog-formula/issues/59
