@@ -4,6 +4,11 @@
 datadog-apt-https:
   pkg.installed:
     - name: apt-transport-https
+
+datadog-apt-key:
+  cmd.run:
+    - name: apt-key adv --recv-keys --keyserver 'keyserver.ubuntu.com' D75CEA17048B9ACBF186794B32637D44F14F620E
+    - unless: apt-key list | grep 'D75C EA17 048B 9ACB F186  794B 3263 7D44 F14F 620E' || apt-key list | grep 'D75CEA17048B9ACBF186794B32637D44F14F620E'
 {%- endif %}
 
 datadog-repo:
