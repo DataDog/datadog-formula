@@ -4,6 +4,11 @@
 datadog-apt-https:
   pkg.installed:
     - name: apt-transport-https
+
+datadog-apt-key:
+  cmd.run:
+    - name: apt-key adv --recv-keys --keyserver 'keyserver.ubuntu.com' D75CEA17048B9ACBF186794B32637D44F14F620E
+    - unless: apt-key list | grep 'D75C EA17 048B 9ACB F186  794B 3263 7D44 F14F 620E' || apt-key list | grep 'D75CEA17048B9ACBF186794B32637D44F14F620E'
 {%- endif %}
 
 datadog-repo:
@@ -26,7 +31,9 @@ datadog-repo:
         {%- endif %}
     - name: deb https://apt.datadoghq.com/ {{ distribution }} {{ packages }}
     - keyserver: keyserver.ubuntu.com
-    - keyid: A2923DFF56EDA6E76E55E492D3A80E30382E94DE
+    - keyid:
+      - A2923DFF56EDA6E76E55E492D3A80E30382E94DE
+      - D75CEA17048B9ACBF186794B32637D44F14F620E
     - file: /etc/apt/sources.list.d/datadog.list
     - require:
       - pkg: datadog-apt-https
@@ -54,9 +61,9 @@ datadog-repo:
     - baseurl: https://yum.datadoghq.com/{{ path }}/{{ grains['cpuarch'] }}
     - gpgcheck: '1'
     {%- if latest_agent_version or parsed_version[1] == '7' %}
-    - gpgkey: https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+    - gpgkey: https://yum.datadoghq.com/DATADOG_RPM_KEY_20200908.public https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
     {%- else %}
-    - gpgkey: https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public https://yum.datadoghq.com/DATADOG_RPM_KEY.public
+    - gpgkey: https://yum.datadoghq.com/DATADOG_RPM_KEY_20200908.public https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public https://yum.datadoghq.com/DATADOG_RPM_KEY.public
     {%- endif %}
     - sslverify: '1'
     {% endif %}
