@@ -1,5 +1,9 @@
 # Changes
 
+## 3.3 / 2020-11-16
+
+* [FEATURE] Trust new Datadog GPG keys [#63][]
+
 ## 3.2 / 2020-08-31
 
 * [FEATURE] Allow installing third-party integrations [#57][] & [#58][]
@@ -80,3 +84,4 @@ This release contains breaking changes to the pillar file structure. Please read
 [#57]: https://github.com/DataDog/datadog-formula/issues/57
 [#58]: https://github.com/DataDog/datadog-formula/issues/58
 [#59]: https://github.com/DataDog/datadog-formula/issues/59
+[#63]: https://github.com/DataDog/datadog-formula/issues/63
