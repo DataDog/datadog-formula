@@ -57,6 +57,11 @@ datadog-repo:
         {%- else %}
             {% set path = 'rpm' %}
         {%- endif %}
+    {%- if latest_agent_version or parsed_version[1] != '5' %}
+    - repo_gpgcheck: '1'
+    {%- else %}
+    - repo_gpgcheck: '0'
+    {%- endif %}
     - name: datadog
     - baseurl: https://yum.datadoghq.com/{{ path }}/{{ grains['cpuarch'] }}
     - gpgcheck: '1'
