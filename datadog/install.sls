@@ -41,19 +41,19 @@ datadog-apt-https:
 
 {% set apt_keys_tmpdir = salt['temp.dir']() %}
 
-{% for key_fingerprint, key_url in datadog_apt_default_keys.items() %}
+{%- for key_fingerprint, key_url in datadog_apt_default_keys.items() %}
   {{ import_apt_key(key_fingerprint, key_url) }}
-{% endfor %}
+{%- endfor %}
 
-{% if (grains['os'].lower() == 'ubuntu' and grains['osrelease'].split('.')[0]|int < 16) or
-      (grains['os'].lower() == 'debian' and grains['osrelease'].split('.')[0]|int < 9) %}
+{%- if (grains['os'].lower() == 'ubuntu' and grains['osrelease'].split('.')[0]|int < 16) or
+       (grains['os'].lower() == 'debian' and grains['osrelease'].split('.')[0]|int < 9) %}
 {{ datadog_apt_trusted_d_keyring }}:
   file.managed:
     - mode: 0644
     - source: {{ datadog_apt_usr_share_keyring }}
-{% endif %}
+{%- endif %}
 
-{% endif %}
+{%- endif %}
 
 {# Some versions of Salt still in use have issue with providing repo options for
    APT sources: https://github.com/saltstack/salt/issues/22412; therefore we use
@@ -63,19 +63,19 @@ datadog-apt-https:
 datadog-repo:
   file.managed:
     {# Determine beta or stable distribution from version #}
-    {% if not latest_agent_version and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
+    {%- if not latest_agent_version and (parsed_version[2] == 'beta' or parsed_version[2] == 'rc') %}
         {% set distribution = 'beta' %}
-    {% else %}
+    {%- else %}
         {% set distribution = 'stable' %}
-    {% endif %}
+    {%- endif %}
     {# Determine which channel we should look in #}
-    {% if latest_agent_version or parsed_version[1] == '7' %}
+    {%- if latest_agent_version or parsed_version[1] == '7' %}
         {% set packages = '7' %}
-    {% elif parsed_version[1] == '6' %}
+    {%- elif parsed_version[1] == '6' %}
         {% set packages = '6' %}
-    {% else %}
+    {%- else %}
         {% set packages = 'main' %}
-    {% endif %}
+    {%- endif %}
     - contents: deb [signed-by={{ datadog_apt_usr_share_keyring }}] https://apt.datadoghq.com/ {{ distribution }} {{ packages }}
     - mode: 0644
     - name: /etc/apt/sources.list.d/datadog.list
@@ -124,8 +124,7 @@ datadog-repo:
     - gpgkey: https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public https://keys.datadoghq.com/DATADOG_RPM_KEY.public
     {%- endif %}
     - sslverify: '1'
-
-{% endif %}
+{%- endif %}
 
 datadog-pkg:
   pkg.installed:
@@ -139,5 +138,10 @@ datadog-pkg:
     {%- endif %}
     - ignore_epoch: True
     - refresh: True
+    {%- if grains['os_family'].lower() == 'debian' %}
+    - require:
+      - file: datadog-repo
+    {%- elif grains['os_family'].lower() == 'redhat' %}
     - require:
       - pkgrepo: datadog-repo
+    {%- endif %}
