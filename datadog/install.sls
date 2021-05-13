@@ -40,6 +40,6 @@ datadog-pkg:
     - version: {{ datadog_install_settings.agent_version }}-1
     {%- endif %}
     - ignore_epoch: True
-    - refresh: True
+    - refresh: False
     - require:
       - pkgrepo: datadog-repo
