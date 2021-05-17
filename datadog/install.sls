@@ -31,6 +31,10 @@ datadog-apt-https:
   pkg.installed:
     - name: apt-transport-https
 
+datadog-gnupg:
+  pkg.installed:
+    - name: gnupg
+
 {# Create the keyring unless it exists #}
 {{ datadog_apt_usr_share_keyring }}:
   file.managed:
