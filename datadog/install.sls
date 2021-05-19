@@ -21,9 +21,10 @@ key-file-{{ key_fingerprint }}-import:
     - env:
         KEY_FROM_URL: |
           {{ key_response.body | indent(10) }}
+    {# the first part extracts the fingerprint of the key from output like "fpr::::A2923DFF56EDA6E76E55E492D3A80E30382E94DE:" #}
     - unless: |
-        echo "{{ key_response.body | indent(8) }}
-        " | gpg --dry-run --import --batch --no-default-keyring --keyring {{ datadog_apt_usr_share_keyring }} 2>&1 | grep "unchanged: 1"
+        fingerprint=$(echo "${KEY_FROM_URL}" | gpg --with-colons --with-fingerprint 2>/dev/null | grep "fpr:" | sed 's|^fpr||' | tr -d ":") && \
+        gpg --no-default-keyring --keyring {{ datadog_apt_usr_share_keyring }} --list-keys --with-fingerprint --with-colons | grep ${fingerprint}
 {% endmacro %}
 
 {%- if grains['os_family'].lower() == 'debian' %}
@@ -85,13 +86,6 @@ datadog-repo:
     - name: /etc/apt/sources.list.d/datadog.list
     - require:
       - pkg: datadog-apt-https
-
-datadog-repo-refresh:
-  cmd.run:
-    - name: apt-get update
-    - retry:
-        attempts: 2 # TODO: 5
-        interval: 1
 
 {%- elif grains['os_family'].lower() == 'redhat' %}
 
