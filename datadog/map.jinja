@@ -26,6 +26,19 @@
 {% set datadog_checks = datadog['checks'] %}
 {% set datadog_install_settings = datadog['install_settings'] %}
 
+{# Set constants for APT key management #}
+{% set datadog_apt_trusted_d_keyring = "/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg" %}
+{% set datadog_apt_usr_share_keyring = "/usr/share/keyrings/datadog-archive-keyring.gpg" %}
+{% set datadog_apt_key_current_name = "DATADOG_APT_KEY_CURRENT.public" %}
+# NOTE: we don't use URLs starting with https://keys.datadoghq.com/, as Python
+# on older Debian/Ubuntu doesn't support SNI and get_url would fail on them
+{% set datadog_apt_default_keys = {
+  datadog_apt_key_current_name: "https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_CURRENT.public",
+  "D75CEA17048B9ACBF186794B32637D44F14F620E": "https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_F14F620E.public",
+  "A2923DFF56EDA6E76E55E492D3A80E30382E94DE": "https://s3.amazonaws.com/public-signing-keys/DATADOG_APT_KEY_382E94DE.public",
+  }
+%}
+
 {# Determine if we're looking for the latest package or a specific version #}
 {%- if datadog_install_settings.agent_version == 'latest' %}
     {%- set latest_agent_version = true %}
