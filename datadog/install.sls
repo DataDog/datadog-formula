@@ -20,9 +20,9 @@ key-file-{{ key_fingerprint }}-import:
         echo "${KEY_FROM_URL}" | gpg --import --batch --no-default-keyring --keyring {{ datadog_apt_usr_share_keyring }}
     - env:
         KEY_FROM_URL: |
-          {{ key_response.body| indent(10) }}
+          {{ key_response.body | indent(10) }}
     - unless: |
-        echo "{{ key_response.body|indent(8) }}
+        echo "{{ key_response.body | indent(8) }}
         " | gpg --dry-run --import --batch --no-default-keyring --keyring {{ datadog_apt_usr_share_keyring }} 2>&1 | grep "unchanged: 1"
 {% endmacro %}
 
