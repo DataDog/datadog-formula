@@ -14,7 +14,7 @@ datadog-apt-key:
 datadog-repo:
   pkgrepo.managed:
     - humanname: "Datadog, Inc."
-    - refresh: False # otherwise this adds 17s to state update!
+    - refresh: True
     - name: deb https://apt.datadoghq.com/ stable 7
     - keyserver: hkp://keyserver.ubuntu.com:80
     - keyid:
@@ -40,6 +40,5 @@ datadog-pkg:
     - version: {{ datadog_install_settings.agent_version }}-1
     {%- endif %}
     - ignore_epoch: True
-    - refresh: False
     - require:
       - pkgrepo: datadog-repo
