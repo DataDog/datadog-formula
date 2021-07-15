@@ -143,3 +143,12 @@ datadog-pkg:
     - require:
       - pkgrepo: datadog-repo
     {%- endif %}
+
+{%- if grains['os_family'].lower() == 'debian' -%}
+  datadog-signing-keys-pkg:
+    pkg.installed:
+      - name: datadog-signing-keys
+      - version: 'latest'
+      - require:
+        - file: datadog-repo
+{%- endif -%}
