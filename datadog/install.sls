@@ -144,7 +144,7 @@ datadog-pkg:
       - pkgrepo: datadog-repo
     {%- endif %}
 
-{%- if grains['os_family'].lower() == 'debian' -%}
+{%- if grains['os_family'].lower() == 'debian' %}
 datadog-signing-keys-pkg:
   pkg.installed:
     - name: datadog-signing-keys
