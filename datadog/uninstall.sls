@@ -7,5 +7,6 @@ datadog-uninstall:
   pkg.removed:
     - pkgs:
       - datadog-agent
+      - datadog-signing-keys
     - require:
       - service: datadog-uninstall
