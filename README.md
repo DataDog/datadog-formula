@@ -173,11 +173,11 @@ datadog:
     logs_enabled: true
 ```
 
-To send logs to Datadog, use the `logs` key in a check (either an existing check to setup logs for an integration, or a custom check to setup custom log collection). In the following example, we'll use a custom check named `system_logs`.
+To send logs to Datadog, use the `logs` key in a check (either an existing check to setup logs for an integration, or a custom check to setup custom log collection). The following example uses a custom check named `system_logs`.
 
-The contents of the `config:` key of this check will be written to the `/etc/datadog-agent/conf.d/<check_name>.d/conf.yaml` file (in this example: `/etc/datadog-agent/conf.d/system_logs.d/conf.yaml`).
+The contents of the `config:` key of this check is written to the `/etc/datadog-agent/conf.d/<check_name>.d/conf.yaml` file (in this example: `/etc/datadog-agent/conf.d/system_logs.d/conf.yaml`).
 
-To list the logs you want to collect, fill the `config` section the same way you'd fill the `conf.yaml` file of a custom log collection configuration file (refer to the section on [custom log collection](https://docs.datadoghq.com/agent/logs/?tab=tailfiles#custom-log-collection) in the official docs).
+To list the logs you want to collect, fill the `config` section the same way you'd fill the `conf.yaml` file of a custom log collection configuration file (see the section on [custom log collection](https://docs.datadoghq.com/agent/logs/?tab=tailfiles#custom-log-collection) in the official docs).
 
 For instance, to collect logs from `/var/log/syslog` and `/var/log/auth.log`, the configuration would be:
 
@@ -209,7 +209,7 @@ Salt formulas are pre-written Salt states. The following states are available in
 | `datadog.service`   | Runs the Datadog Agent service, which watches for changes to the config files for the Agent and checks. |
 | `datadog.uninstall` | Stops the service and uninstalls the Datadog Agent.                                                     |
 
-**NOTE**: When using `datadog.config` to configure different check instances on different machines, the `pillar_merge_lists` option must be set to `True` in the Salt master config or the Salt minion config if running masterless. See the [SaltStack documentation][5] for more details.
+**NOTE**: When using `datadog.config` to configure different check instances on different machines, [pillar_merge_lists][5] must be set to `True` in the Salt master config or the Salt minion config if running masterless.
 
 [1]: http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html
 [2]: https://app.datadoghq.com/account/settings#api
