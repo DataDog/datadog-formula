@@ -209,7 +209,7 @@ Salt formulas are pre-written Salt states. The following states are available in
 | `datadog.service`   | Runs the Datadog Agent service, which watches for changes to the config files for the Agent and checks. |
 | `datadog.uninstall` | Stops the service and uninstalls the Datadog Agent.                                                     |
 
-**NOTE**: When using `datadog.config` to configure different check instances on different machines, the `pillar_merge_lists` option must be set to `True` in the Salt master config or the Salt minion config if running masterless. See the [SaltStack][5]  documentation for more details.
+**NOTE**: When using `datadog.config` to configure different check instances on different machines, [pillar_merge_lists][5] must be set to `True` in the Salt master config or the Salt minion config if running masterless.
 
 [1]: http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html
 [2]: https://app.datadoghq.com/account/settings#api
