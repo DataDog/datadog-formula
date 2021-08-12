@@ -19,7 +19,7 @@ When submitting your PR, here are some items you can check or improve to facilit
   * Write tests for the code you wrote.
   * Preferably, make sure that all unit tests pass locally and some relevant kitchen tests.
   * Summarize your PR with an explanatory title and a message describing your changes, cross-referencing any related bugs/PRs.
-  * Open your PR against the `master` branch.
+  * Open your PR against the `main` branch.
 
 Your pull request must pass all CI tests before we merge it. If you see an error and don't think it's your fault, it may not be! [Join us on Slack][slack] or send us an email, and together we'll get it sorted out.
 
@@ -35,7 +35,7 @@ The commit message should describe the reason for the change and give extra deta
 
 ### Squash your commits
 
-Rebase your changes on `master` and squash your commits whenever possible. This keeps history cleaner and easier to revert things. It also makes developers happier!
+Rebase your changes on `main` and squash your commits whenever possible. This keeps history cleaner and easier to revert things. It also makes developers happier!
 
 ## Development
 
