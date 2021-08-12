@@ -1,5 +1,12 @@
 # Changes
 
+## 3.4 / 2021-08-12
+
+* [FEATURE] Install datadog-signing-keys on Debian-based platforms [#69][]
+* [FEATURE] Implement improvements to APT keys management [#68][]
+* [FEATURE] Enable repo_gpgcheck for Agent > 5 yum repos [#67][]
+* [FEATURE] Add 'CURRENT' public key entry, get keys from keys.datadoghq.com [#65][]
+
 ## 3.3 / 2020-11-16
 
 * [FEATURE] Trust new Datadog GPG keys [#63][]
@@ -85,3 +92,7 @@ This release contains breaking changes to the pillar file structure. Please read
 [#58]: https://github.com/DataDog/datadog-formula/issues/58
 [#59]: https://github.com/DataDog/datadog-formula/issues/59
 [#63]: https://github.com/DataDog/datadog-formula/issues/63
+[#65]: https://github.com/DataDog/datadog-formula/issues/65
+[#67]: https://github.com/DataDog/datadog-formula/issues/67
+[#68]: https://github.com/DataDog/datadog-formula/issues/68
+[#69]: https://github.com/DataDog/datadog-formula/issues/69
