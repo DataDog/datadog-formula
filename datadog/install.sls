@@ -32,6 +32,7 @@ datadog-repo:
 datadog-pkg:
   pkg.installed:
     - name: datadog-agent
+    - refresh: False
     {%- if latest_agent_version %}
     - version: 'latest'
     {%- elif grains['os_family'].lower() == 'debian' %}
