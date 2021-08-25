@@ -14,7 +14,7 @@ datadog-apt-key:
 datadog-repo:
   pkgrepo.managed:
     - humanname: "Datadog, Inc."
-    - refresh: True
+    - refresh: False
     - name: deb https://apt.datadoghq.com/ stable 7
     - keyserver: hkp://keyserver.ubuntu.com:80
     - keyid:
