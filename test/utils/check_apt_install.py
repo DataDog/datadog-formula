@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import apt, re, sys
 from helpers import get_options, check_major_version, check_install_info

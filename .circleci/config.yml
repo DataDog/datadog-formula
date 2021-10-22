@@ -19,18 +19,18 @@ commands:
 
   setup_ubuntu:
     steps:
-      - run: apt-get update && apt-get install -y curl sudo
+      - run: apt-get update && apt-get install -y curl sudo python3
+      - setup_common
       - run: cp test/utils/systemctl.py /bin/systemctl
       - run: cp test/utils/systemctl.py /bin/systemd
-      - setup_common
 
   setup_centos:
     steps:
       - run: yum -y update
-      - run: yum install -y curl sudo
+      - run: yum install -y curl sudo python3
+      - setup_common
       - run: cp test/utils/systemctl.py /usr/bin/systemctl
       - run: cp test/utils/systemctl.py /usr/bin/systemd
-      - setup_common
 
   install:
     steps:
@@ -46,7 +46,7 @@ commands:
         type: string
         default: "apt"
     steps:
-      - run: python test/utils/check_<<parameters.repo_type>>_install.py --major-version <<parameters.version>>
+      - run: python3 test/utils/check_<<parameters.repo_type>>_install.py --major-version <<parameters.version>>
 
   uninstall:
     steps:
@@ -59,12 +59,12 @@ commands:
         type: string
         default: "apt"
     steps:
-      - run: python test/utils/check_<<parameters.repo_type>>_install.py --not-installed
+      - run: python3 test/utils/check_<<parameters.repo_type>>_install.py --not-installed
 
 jobs:
   agent7_ubuntu:
     docker:
-      - image: ubuntu:bionic-20191202
+      - image: ubuntu:focal
     steps:
       - checkout
       - setup_installed_version:
@@ -96,7 +96,7 @@ jobs:
 
   agent6_ubuntu:
     docker:
-      - image: ubuntu:bionic-20191202
+      - image: ubuntu:focal
     steps:
       - checkout
       - setup_installed_version:
