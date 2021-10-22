@@ -1,4 +1,4 @@
-{% from "./map.jinja" import datadog_checks with context -%}
+{% from tpldir ~ "/map.jinja" import datadog_checks with context -%}
 
 {% if datadog_checks[check_name].config is defined -%}
 

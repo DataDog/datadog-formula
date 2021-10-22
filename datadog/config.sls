@@ -1,4 +1,4 @@
-{% from "./map.jinja" import datadog_config, datadog_install_settings, datadog_checks, latest_agent_version, parsed_version with context %}
+{% from tpldir ~ "/map.jinja" import datadog_config, datadog_install_settings, datadog_checks, latest_agent_version, parsed_version with context %}
 {% set config_file_path = '%s/%s'|format(datadog_install_settings.config_folder, datadog_install_settings.config_file) -%}
 
 {%- if not latest_agent_version and parsed_version[1] == '5' %}
@@ -10,6 +10,8 @@ datadog_conf_installed:
     - group: dd-agent
     - mode: 600
     - template: jinja
+    - context:
+        tpldir: {{ tpldir }}
     - require:
       - pkg: datadog-pkg
 {%- else %}
@@ -21,6 +23,8 @@ datadog_yaml_installed:
     - group: dd-agent
     - mode: 600
     - template: jinja
+    - context:
+        tpldir: {{ tpldir }}
     - require:
       - pkg: datadog-pkg
 {%- endif %}
@@ -57,6 +61,7 @@ datadog_{{ check_name }}_yaml_installed:
     - template: jinja
     - context:
         check_name: {{ check_name }}
+        tpldir: {{ tpldir }}
 
 {%- if latest_agent_version or parsed_version[1] != '5' %}
 {%- if datadog_checks[check_name].version is defined %}
@@ -86,5 +91,7 @@ install_info_installed:
     - group: dd-agent
     - mode: 600
     - template: jinja
+    - context:
+        tpldir: {{ tpldir }}
     - require:
       - pkg: datadog-pkg
