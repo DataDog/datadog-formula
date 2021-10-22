@@ -1,4 +1,4 @@
-{% from "datadog/map.jinja" import datadog_install_settings with context %}
+{% from "./map.jinja" import datadog_install_settings with context %}
 
 datadog-uninstall:
   service.dead:

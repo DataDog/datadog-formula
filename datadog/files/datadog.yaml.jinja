@@ -1,4 +1,4 @@
-{% from "datadog/map.jinja" import datadog_config with context -%}
+{% from "./map.jinja" import datadog_config with context -%}
 
 {% if datadog_config.api_key is not defined -%}
 api_key:

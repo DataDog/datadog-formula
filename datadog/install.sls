@@ -1,4 +1,4 @@
-{% from "datadog/map.jinja" import
+{% from "./map.jinja" import
     datadog_apt_default_keys,
     datadog_apt_trusted_d_keyring,
     datadog_apt_usr_share_keyring,

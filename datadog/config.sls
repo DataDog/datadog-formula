@@ -5,7 +5,7 @@
 datadog_conf_installed:
   file.managed:
     - name: {{ config_file_path }}
-    - source: salt://datadog/files/datadog.conf.jinja
+    - source: salt://{{ tpldir }}/files/datadog.conf.jinja
     - user: dd-agent
     - group: dd-agent
     - mode: 600
@@ -16,7 +16,7 @@ datadog_conf_installed:
 datadog_yaml_installed:
   file.managed:
     - name: {{ config_file_path }}
-    - source: salt://datadog/files/datadog.yaml.jinja
+    - source: salt://{{ tpldir }}/files/datadog.yaml.jinja
     - user: dd-agent
     - group: dd-agent
     - mode: 600
@@ -50,7 +50,7 @@ datadog_{{ check_name }}_yaml_installed:
     {%- else %}
     - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.yaml
     {%- endif %}
-    - source: salt://datadog/files/conf.yaml.jinja
+    - source: salt://{{ tpldir }}/files/conf.yaml.jinja
     - user: dd-agent
     - group: root
     - mode: 600
@@ -81,7 +81,7 @@ datadog_check_{{ check_name }}_version_{{ datadog_checks[check_name].version }}_
 install_info_installed:
   file.managed:
     - name: {{ install_info_path }}
-    - source: salt://datadog/files/install_info.jinja
+    - source: salt://{{ tpldir }}/files/install_info.jinja
     - user: dd-agent
     - group: dd-agent
     - mode: 600
