@@ -14,7 +14,7 @@ datadog:
       config:
         instances:
           - {}
-      version: 0.1.0
+      version: 1.0.0
       third_party: true
 
   install_settings:
