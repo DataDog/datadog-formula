@@ -1,5 +1,9 @@
 # Changes
 
+## 3.5
+
+* [DEPRECATION] Remove the old RPM GPG key 4172A230 from hosts that still trust it, and stop trusting it.
+
 ## 3.4 / 2021-08-12
 
 * [FEATURE] Install datadog-signing-keys on Debian-based platforms [#69][]
