@@ -116,13 +116,14 @@ datadog-repo:
     - name: datadog
     - baseurl: https://yum.datadoghq.com/{{ path }}/{{ grains['cpuarch'] }}
     - gpgcheck: '1'
-    {%- if latest_agent_version or parsed_version[1] == '7' %}
     - gpgkey: https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
-    {%- else %}
-    - gpgkey: https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public https://keys.datadoghq.com/DATADOG_RPM_KEY.public
-    {%- endif %}
     - sslverify: '1'
 {%- endif %}
+
+key-4172a230-removal:
+  cmd.run:
+    - name: rpm --erase gpg-pubkey-4172a230-55dd14f6
+    - onlyif: rpm -q gpg-pubkey-4172a230-55dd14f6
 
 datadog-pkg:
   pkg.installed:
