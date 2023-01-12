@@ -1,6 +1,6 @@
 # Changes
 
-## 3.5
+## 3.5 / 2023-01-12
 
 * [DEPRECATION] Remove the old RPM GPG key 4172A230 from hosts that still trust it, and stop trusting it.
 
