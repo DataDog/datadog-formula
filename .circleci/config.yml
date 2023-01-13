@@ -19,10 +19,11 @@ commands:
 
   setup_ubuntu:
     steps:
-      - run: apt-get update && apt-get install -y curl sudo
+      - run: apt-get update && apt-get install -y curl sudo python3
       - run: cp test/utils/systemctl.py /bin/systemctl
       - run: cp test/utils/systemctl.py /bin/systemd
       - setup_common
+      - run: update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
   setup_centos:
     steps:
