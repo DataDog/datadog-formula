@@ -11,4 +11,8 @@ datadog:
             name: "pillars"
 
   install_settings:
-    agent_version: 5.32.5
+    {% if grains['os_family'].lower() == 'redhat' %}
+    agent_version: 5.32.9
+    {% else %}
+    agent_version: 5.32.8
+    {% endif %}
