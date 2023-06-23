@@ -3,6 +3,7 @@ datadog:
     api_key: aaaaaaaabbbbbbbbccccccccdddddddd
     site: datadoghq.com
     python_version: 2
+    hostname: test-6
 
   checks:
     directory:

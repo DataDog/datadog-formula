@@ -2,6 +2,7 @@ datadog:
   config:
     api_key: aaaaaaaabbbbbbbbccccccccdddddddd
     site: datadoghq.com
+    hostname: test-7
 
   checks:
     directory:
