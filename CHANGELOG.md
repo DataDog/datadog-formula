@@ -1,5 +1,9 @@
 # Changes
 
+## 3.6 / 2023-07-10
+
+* [FEATURE] Update signing keys [#83][]
+
 ## 3.5 / 2023-01-12
 
 * [DEPRECATION] Remove the old RPM GPG key 4172A230 from hosts that still trust it, and stop trusting it.
@@ -100,3 +104,4 @@ This release contains breaking changes to the pillar file structure. Please read
 [#67]: https://github.com/DataDog/datadog-formula/issues/67
 [#68]: https://github.com/DataDog/datadog-formula/issues/68
 [#69]: https://github.com/DataDog/datadog-formula/issues/69
+[#83]: https://github.com/DataDog/datadog-formula/issues/83
