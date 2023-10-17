@@ -46,7 +46,7 @@
     {%- set latest_agent_version = true %}
 {%- else %}
     {%- set latest_agent_version = false %}
-    {%- set parsed_version = datadog_install_settings.agent_version | regex_match('(([0-9]+)\.[0-9]+\.[0-9]+)(?:~(rc|beta)\.([0-9]+))?') %}
+    {%- set parsed_version = datadog_install_settings.agent_version | regex_match('(([0-9]+)\.[0-9]+\.[0-9]+)(?:~(rc|beta)(\.([0-9]+))?)?') %}
 {%- endif %}
 
 {# Determine defaults depending on specified version #}
