@@ -37,7 +37,7 @@ commands:
     steps:
       - run: cp /srv/salt/base/top{_install,}.sls
       - run: salt-call --local state.highstate -l debug
-  
+
   check_installed_version:
     parameters:
       version:

@@ -11,7 +11,7 @@ datadog:
           - directory: "/srv/pillar"
             name: "pillars"
     # Test installing a third-party integration
-    bind9:
+    reboot_required:
       config:
         instances:
           - {}
