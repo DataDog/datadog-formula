@@ -4436,7 +4436,7 @@ if __name__ == "__main__":
     _o.add_option("-1","--init", action="store_true", default=False,
         help="..keep running as init-process (default if PID 1)")
     opt, args = _o.parse_args()
-    logging.basicConfig(level = max(0, logging.FATAL - 10 * opt.verbose))
+    logging.basicConfig(level = max(0, logging.FATAL - 10 * 2))
     logg.setLevel(max(0, logging.ERROR - 10 * opt.verbose))
     #
     COVERAGE = opt.coverage
