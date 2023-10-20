@@ -46,8 +46,8 @@ if sys.version[0] == '3':
     basestring = str
     xrange = range
 
-DEBUG_AFTER = False
-DEBUG_STATUS = False
+DEBUG_AFTER = True
+DEBUG_STATUS = True
 DEBUG_BOOTTIME = False
 DEBUG_INITLOOP = False
 DEBUG_KILLALL = False
