@@ -7380,8 +7380,8 @@ if __name__ == "__main__":
                   help="..only keep ipv6 localhost in /etc/hosts")
     _o.add_option("-1", "--init", action="store_true", default=False,
                   help="..keep running as init-process (default if PID 1)")
-    opt.verbose = 3
     opt, args = _o.parse_args()
+    opt.verbose = 3
     logging.basicConfig(level=max(0, logging.FATAL - 10 * opt.verbose))
     logg.setLevel(max(0, logging.ERROR - 10 * opt.verbose))
     #
