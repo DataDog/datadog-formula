@@ -19,6 +19,7 @@ import collections
 import shlex
 import fnmatch
 import re
+import time
 from types import GeneratorType
 
 __copyright__ = "(C) 2016-2023 Guido U. Draheim, licensed under the EUPL"
@@ -4759,6 +4760,7 @@ class Systemctl:
         if not conf:
             return "unknown"
         pid_file = self.pid_file_from(conf)
+        time.sleep(5)
         logg.debug('Checking pid file %s', pid_file)
         if pid_file:  # application PIDFile
             if not os.path.exists(pid_file):
