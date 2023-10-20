@@ -5,6 +5,7 @@ datadog-agent-service:
   service.running:
     - name: datadog-agent
     - enable: True
+    - init_delay: 5
     - watch:
       - pkg: datadog-agent
       - file: {{ config_file_path }}
