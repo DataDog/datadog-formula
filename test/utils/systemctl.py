@@ -4759,24 +4759,30 @@ class Systemctl:
         if not conf:
             return "unknown"
         pid_file = self.pid_file_from(conf)
+        logg.debug(f'Checking pid file {pid_file}')
         if pid_file:  # application PIDFile
             if not os.path.exists(pid_file):
+                logg.debug('pid file not found')
                 return "inactive"
         status_file = self.get_status_file_from(conf)
+        logg.debug(f'checking status file: {status_file}')
         if self.getsize(status_file):
             state = self.get_status_from(conf, "ActiveState", "")
             if state:
                 if DEBUG_STATUS:
                     logg.info("get_status_from %s => %s", conf.name(), state)
                 return state
+            logg.debug('No state from status file')
         pid = self.read_mainpid_from(conf)
         if DEBUG_STATUS:
             logg.debug("pid_file '%s' => PID %s", pid_file or status_file, strE(pid))
         if pid:
             if not pid_exists(pid) or pid_zombie(pid):
+                logg.debug('no process associated with PID')
                 return "failed"
             return "active"
         else:
+            logg.debug('defaulting to inactive')
             return "inactive"
 
     def get_active_target_from(self, conf):
