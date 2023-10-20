@@ -34,28 +34,18 @@ def main(argv):
     installed_version = get_yum_package_version("datadog-agent")
     print("Installed Agent version: {}".format(installed_version))
 
-    result = check_major_version(installed_version, expected_major_version)
-    if result:
-        print("Agent version check successful!")
-    else:
-        print("Agent version check failed.")
-        sys.exit(1)
+    assert check_major_version(installed_version, expected_major_version)
+    print("Agent version check successful!")
 
     # expected_major_version
     if expected_major_version:
-        if check_install_info(expected_major_version):
-            print("install_info check successful!")
-        else:
-            print("install_info check failed.")
-            sys.exit(1)
+        assert check_install_info(expected_major_version)
+        print("install_info check successful!")
     else:
         print("Skipping install_info check.")
 
-    if is_rpm_package_installed("gpg-pubkey-4172a230-55dd14f6"):
-        print("GPG key 4172a230 is installed, but shouldn't.")
-        sys.exit(1)
-    else:
-        print("GPG key 4172a230 is not installed.")
+    assert not is_rpm_package_installed("gpg-pubkey-4172a230-55dd14f6")
+    print("GPG key 4172a230 is not installed.")
 
     sys.exit()
 
