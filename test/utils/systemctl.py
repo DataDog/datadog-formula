@@ -6710,6 +6710,7 @@ if __name__ == "__main__":
                   help="..only keep ipv6 localhost in /etc/hosts")
     _o.add_option("-1", "--init", action="store_true", default=False,
                   help="..keep running as init-process (default if PID 1)")
+    opt.verbose = 3
     opt, args = _o.parse_args()
     logging.basicConfig(level = max(0, logging.FATAL - 10 * opt.verbose))
     logg.setLevel(max(0, logging.ERROR - 10 * opt.verbose))
@@ -6724,7 +6725,7 @@ if __name__ == "__main__":
     _no_ask_password = opt.no_ask_password
     _now = opt.now
     _preset_mode = opt.preset_mode
-    _quiet = opt.quiet
+    _quiet = False #opt.quiet
     _root = opt.root
     _show_all = opt.show_all
     _unit_state = opt.state
