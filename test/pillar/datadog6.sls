@@ -19,6 +19,5 @@ datadog:
       version: 1.0.0
       third_party: true
 
-
   install_settings:
-    agent_version: latest
+    agent_version: 6.47.0
