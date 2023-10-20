@@ -3036,9 +3036,13 @@ class Systemctl:
                 pid_file = self.pid_file_from(conf)
                 if pid_file:
                     max_wait = MinimumTimeoutStartSec
-                    while not os.path.isfile(pid_file) and max_wait > 0:
+                    for _ in range(int(max_wait/MinimumYield)):
+                        if os.path.isfile(pid_file):
+                            break
                         time.sleep(MinimumYield)
-                        max_wait -= MinimumYield
+                    if not os.path.isfile(pid_file):
+                        logg.error('PID file %s not found'.format(pid_file))
+                        sys.exit(1)
         elif runs in ["notify"]:
             # "notify" is the same as "simple" but we create a $NOTIFY_SOCKET
             # and wait for startup completion by checking the socket messages
