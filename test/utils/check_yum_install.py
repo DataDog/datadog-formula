@@ -23,7 +23,7 @@ def is_rpm_package_installed(package_name):
     try:
         subprocess.check_output(["rpm", "-q", package_name])
         return True
-    except subprocess.CalledProcessError as e:
+    except subprocess.CalledProcessError:
         return False
 
 
