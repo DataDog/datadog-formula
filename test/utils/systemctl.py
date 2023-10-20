@@ -4759,13 +4759,13 @@ class Systemctl:
         if not conf:
             return "unknown"
         pid_file = self.pid_file_from(conf)
-        logg.debug(f'Checking pid file {pid_file}')
+        logg.debug('Checking pid file %s', pid_file)
         if pid_file:  # application PIDFile
             if not os.path.exists(pid_file):
                 logg.debug('pid file not found')
                 return "inactive"
         status_file = self.get_status_file_from(conf)
-        logg.debug(f'checking status file: {status_file}')
+        logg.debug('checking status file: %s', status_file)
         if self.getsize(status_file):
             state = self.get_status_from(conf, "ActiveState", "")
             if state:
