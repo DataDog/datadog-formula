@@ -3033,6 +3033,12 @@ class Systemctl:
                     if run.returncode and exe.check:
                         service_result = "failed"
                         break
+                pid_file = self.pid_file_from(conf)
+                if pid_file:
+                    max_wait = MinimumTimeoutStartSec
+                    while not os.path.isfile(pid_file) and max_wait > 0:
+                        time.sleep(MinimumYield)
+                        max_wait -= MinimumYield
         elif runs in ["notify"]:
             # "notify" is the same as "simple" but we create a $NOTIFY_SOCKET
             # and wait for startup completion by checking the socket messages
