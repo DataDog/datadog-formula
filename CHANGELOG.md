@@ -1,5 +1,9 @@
 # Changes
 
+## 3.7 / 2023-10-31
+
+* [FEATURE] Add support for SUSE [#89][]
+
 ## 3.6 / 2023-07-10
 
 * [FEATURE] Update signing keys [#83][]
