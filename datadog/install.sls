@@ -87,7 +87,7 @@ datadog-repo:
     - require:
       - pkg: datadog-apt-https
 
-{%- elif grains['os_family'].lower() == 'redhat' %}
+{%- elif grains['os_family'].lower() in ['redhat', 'suse'] %}
 
 datadog-repo:
   pkgrepo.managed:
@@ -108,6 +108,9 @@ datadog-repo:
       {%- else %}
           {% set path = 'rpm' %}
       {%- endif %}
+    {%- if grains['os_family'].lower() == 'suse' %}
+    {% set path = 'suse/' + path %}
+    {%- endif %}
     {%- if latest_agent_version or parsed_version[1] != '5' %}
     - repo_gpgcheck: '1'
     {%- else %}
@@ -117,6 +120,7 @@ datadog-repo:
     - baseurl: https://yum.datadoghq.com/{{ path }}/{{ grains['cpuarch'] }}
     - gpgcheck: '1'
     - gpgkey: https://keys.datadoghq.com/DATADOG_RPM_KEY_CURRENT.public https://keys.datadoghq.com/DATADOG_RPM_KEY_B01082D3.public https://keys.datadoghq.com/DATADOG_RPM_KEY_FD4BF915.public https://keys.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public
+    - gpgautoimport: True
     - sslverify: '1'
 {%- endif %}
 
@@ -134,13 +138,15 @@ datadog-pkg:
     - version: 1:{{ datadog_install_settings.agent_version }}-1
     {%- elif grains['os_family'].lower() == 'redhat' %}
     - version: {{ datadog_install_settings.agent_version }}-1
+    {%- elif grains['os_family'].lower() == 'suse' %}
+    - version: 1:{{ datadog_install_settings.agent_version }}-1
     {%- endif %}
     - ignore_epoch: True
     - refresh: True
     {%- if grains['os_family'].lower() == 'debian' %}
     - require:
       - file: datadog-repo
-    {%- elif grains['os_family'].lower() == 'redhat' %}
+    {%- elif grains['os_family'].lower() in ['redhat', 'suse'] %}
     - require:
       - pkgrepo: datadog-repo
     {%- endif %}

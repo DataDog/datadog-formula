@@ -27,17 +27,23 @@ commands:
 
   setup_centos:
     steps:
-      - run: yum -y update
-      - run: yum install -y curl sudo
+      - run: yum -y update && yum install -y curl sudo
       - run: cp test/utils/systemctl.py /usr/bin/systemctl
       - run: cp test/utils/systemctl.py /usr/bin/systemd
       - setup_common
+
+  setup_suse:
+    steps:
+      - run: zypper refresh && zypper -n install curl sudo python3
+      - setup_common
+      - run: cp test/utils/systemctl.py /usr/bin/systemctl
+      - run: cp test/utils/systemctl.py /usr/bin/systemd
 
   install:
     steps:
       - run: cp /srv/salt/base/top{_install,}.sls
       - run: salt-call --local state.highstate -l debug
-  
+
   check_installed_version:
     parameters:
       version:
@@ -159,6 +165,21 @@ jobs:
       - check_uninstalled:
           repo_type: "yum"
 
+  agent7_suse:
+    docker:
+      - image: opensuse/leap:15
+    steps:
+      - checkout
+      - setup_installed_version:
+          version: "7"
+      - setup_suse
+      - install
+      - check_installed_version:
+          version: "7"
+          repo_type: "rpm"
+      - uninstall
+      - check_uninstalled:
+          repo_type: "rpm"
 
 workflows:
   version: 2.1
@@ -170,3 +191,4 @@ workflows:
       - agent6_centos
       - agent5_ubuntu
       - agent5_centos
+      - agent7_suse
