@@ -1,8 +1,6 @@
-version: '3'
-
 services:
   masterless:
-    image: dd-salt-${TEST_DIST}-masterless
+    platform: linux/amd64
     build:
       context: .
       dockerfile: ./dist/${TEST_DIST}_Dockerfile
