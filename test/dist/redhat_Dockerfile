@@ -2,14 +2,14 @@ FROM centos:7
 LABEL maintainer="package@datadoghq.com"
 
 # preparation for saltstack
-RUN yum -y update && yum -y install curl
+RUN yum -y update && yum -y install curl python3
 
 # enable systemd, thanks to @gdraheim (https://github.com/gdraheim/)
 ADD utils/systemctl.py /usr/bin/systemctl
 ADD utils/systemctl.py /usr/bin/systemd
 
 # install salt
-RUN curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
+RUN curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable
 
 # add the start test script
 ADD start.sh /start.sh

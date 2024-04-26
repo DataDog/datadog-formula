@@ -27,7 +27,7 @@ commands:
 
   setup_centos:
     steps:
-      - run: yum -y update && yum install -y curl sudo
+      - run: yum -y update && yum install -y curl sudo python3
       - run: cp test/utils/systemctl.py /usr/bin/systemctl
       - run: cp test/utils/systemctl.py /usr/bin/systemd
       - setup_common
