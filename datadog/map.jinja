@@ -26,6 +26,7 @@
 {% set datadog_config = datadog['config'] %}
 {% set datadog_checks = datadog['checks'] %}
 {% set datadog_install_settings = datadog['install_settings'] %}
+{% set datadog_deprecated = false %}
 
 {# Set constants for APT key management #}
 {% set datadog_apt_trusted_d_keyring = "/etc/apt/trusted.gpg.d/datadog-archive-keyring.gpg" %}
@@ -47,6 +48,10 @@
 {%- else %}
     {%- set latest_agent_version = false %}
     {%- set parsed_version = datadog_install_settings.agent_version | regex_match('(([0-9]+)\.[0-9]+\.[0-9]+)(?:~(rc|beta)(\.([0-9]+))?)?') %}
+    
+    {%- if parsed_version[0].split('.')[1]|int >= 52 and grains['os_family'].lower() == 'redhat' and grains['osmajorrelease'] < 7 %}
+        {%- set datadog_deprecated = true %}
+    {%- endif%}
 {%- endif %}
 
 {# Determine defaults depending on specified version #}
