@@ -3,7 +3,7 @@ version: 2.1
 commands:
   setup_common:
     steps:
-      - run: curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable; exit 0
+      - run: curl -L https://bootstrap.saltstack.com | sh -s -- -d -X stable
       - run: mkdir -p /etc/salt/minion.d && cp test/minion.d/masterless.conf /etc/salt/minion.d/
       - run: mkdir -p /srv/pillar && cp -r test/pillar /srv/
       - run: mkdir -p /srv/salt && cp -r test/base /srv/salt/
@@ -182,7 +182,6 @@ jobs:
           repo_type: "rpm"
 
 workflows:
-  version: 2.1
   test_datadog_formula:
     jobs:
       - agent7_ubuntu
