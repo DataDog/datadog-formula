@@ -1,4 +1,4 @@
-{% from "datadog/map.jinja" import datadog_install_settings, datadog_checks, latest_agent_version, parsed_version with context %}
+{% from tpldir ~ "/map.jinja" import datadog_install_settings, datadog_checks, latest_agent_version, parsed_version with context %}
 {% set config_file_path = '%s/%s'|format(datadog_install_settings.config_folder, datadog_install_settings.config_file) -%}
 
 datadog-agent-service:
