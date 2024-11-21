@@ -1,26 +1,30 @@
-{% from "datadog/map.jinja" import datadog_config, datadog_install_settings, datadog_checks, latest_agent_version, parsed_version with context %}
+{% from tpldir ~ "/map.jinja" import datadog_config, datadog_install_settings, datadog_checks, latest_agent_version, parsed_version with context %}
 {% set config_file_path = '%s/%s'|format(datadog_install_settings.config_folder, datadog_install_settings.config_file) -%}
 
 {%- if not latest_agent_version and parsed_version[1] == '5' %}
 datadog_conf_installed:
   file.managed:
     - name: {{ config_file_path }}
-    - source: salt://datadog/files/datadog.conf.jinja
+    - source: salt://{{ tpldir }}/files/datadog.conf.jinja
     - user: dd-agent
     - group: dd-agent
     - mode: 600
     - template: jinja
+    - context:
+        tpldir: {{ tpldir }}
     - require:
       - pkg: datadog-pkg
 {%- else %}
 datadog_yaml_installed:
   file.managed:
     - name: {{ config_file_path }}
-    - source: salt://datadog/files/datadog.yaml.jinja
+    - source: salt://{{ tpldir }}/files/datadog.yaml.jinja
     - user: dd-agent
     - group: dd-agent
     - mode: 600
     - template: jinja
+    - context:
+        tpldir: {{ tpldir }}
     - require:
       - pkg: datadog-pkg
 {%- endif %}
@@ -50,13 +54,14 @@ datadog_{{ check_name }}_yaml_installed:
     {%- else %}
     - name: {{ datadog_install_settings.confd_path }}/{{ check_name }}.yaml
     {%- endif %}
-    - source: salt://datadog/files/conf.yaml.jinja
+    - source: salt://{{ tpldir }}/files/conf.yaml.jinja
     - user: dd-agent
     - group: root
     - mode: 600
     - template: jinja
     - context:
         check_name: {{ check_name }}
+        tpldir: {{ tpldir }}
 
 {%- if latest_agent_version or parsed_version[1] != '5' %}
 {%- if datadog_checks[check_name].version is defined %}
@@ -81,10 +86,12 @@ datadog_check_{{ check_name }}_version_{{ datadog_checks[check_name].version }}_
 install_info_installed:
   file.managed:
     - name: {{ install_info_path }}
-    - source: salt://datadog/files/install_info.jinja
+    - source: salt://{{ tpldir }}/files/install_info.jinja
     - user: dd-agent
     - group: dd-agent
     - mode: 600
     - template: jinja
+    - context:
+        tpldir: {{ tpldir }}
     - require:
       - pkg: datadog-pkg
