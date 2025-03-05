@@ -89,9 +89,16 @@ install_info_installed:
     - require:
       - pkg: datadog-pkg
 
-{% for filename, config in pillar.get('datadog:additional_config', {}).items() %}
+{% for filename, config in salt['pillar.get']('datadog:additional_config').items() %}
 /etc/datadog-agent/{{ filename }}:
   file.serialize:
     - dataset: {{ config }}
     - formatter: yaml
+    - user: dd-agent
+    - group: dd-agent
+    - mode: 600
+    - require:
+      - pkg: datadog-pkg
+    - watch_in:
+      - service: datadog-agent-service
 {% endfor %}
