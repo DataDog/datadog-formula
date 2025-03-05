@@ -88,3 +88,10 @@ install_info_installed:
     - template: jinja
     - require:
       - pkg: datadog-pkg
+
+{% for filename, config in pillar.get('datadog:additional_config', {}).items() %}
+/etc/datadog-agent/{{ filename }}:
+  file.serialize:
+    - dataset: {{ config }}
+    - formatter: yaml
+{% endfor %}
