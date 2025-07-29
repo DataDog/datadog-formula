@@ -211,7 +211,7 @@ Salt formulas are pre-written Salt states. The following states are available in
 
 **NOTE**: When using `datadog.config` to configure different check instances on different machines, [pillar_merge_lists][5] must be set to `True` in the Salt master config or the Salt minion config if running masterless.
 
-[1]: http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html
+[1]: https://docs.saltproject.io/en/latest/topics/development/conventions/formulas.html
 [2]: https://app.datadoghq.com/organization-settings/api-keys
 [3]: https://docs.datadoghq.com/integrations/directory/
 [4]: https://github.com/DataDog/datadog-formula/blob/master/pillar.example
