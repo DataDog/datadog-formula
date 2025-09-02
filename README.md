@@ -12,29 +12,6 @@ The Datadog SaltStack formula only supports installs on Debian-based and RedHat-
 
 The following instructions add the Datadog formula to the `base` Salt environment. To add it to another Salt environment, change the `base` references to the name of your Salt environment.
 
-#### Option 1
-
-Install the [Datadog formula][6] in the base environment of your Salt master node, using the `gitfs_remotes` option in your Salt master configuration file (defaults to `/etc/salt/master`):
-
-```text
-fileserver_backend:
-  - roots # Active by default, necessary to be able to use the local salt files we define in the next steps
-  - gitfs # Adds gitfs as a fileserver backend to be able to use gitfs_remotes
-
-gitfs_remotes:
-  - https://github.com/DataDog/datadog-formula.git:
-    - saltenv:
-      - base:
-        - ref: 3.0 # Pin the version of the formula you want to use
-```
-
-Then restart your Salt Master service to apply the configuration changes:
-
-```shell
-systemctl restart salt-master
-# OR
-service salt-master restart
-```
 
 #### Option 2
 
