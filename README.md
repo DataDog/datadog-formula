@@ -9,11 +9,36 @@ The Datadog SaltStack formula is used to install the Datadog Agent and the Agent
 The Datadog SaltStack formula only supports installs on Debian-based and RedHat-based systems.
 
 ### Installation
+Follow the [in‑app installation guide in Fleet Automation][7] to select your required settings, copy the generated pillar snippet, add it to your Salt pillar file, and run your usual Salt state to deploy the Datadog Agent. For advanced options, including managing Agent upgrades, enabling Agent integrations, additional feature toggles and troubleshooting see the [Advanced configurations section](#advanced-installation-options). 
 
-The following instructions add the Datadog formula to the `base` Salt environment. To add it to another Salt environment, change the `base` references to the name of your Salt environment.
+![Saltstack Agent installation page][8]
 
+#### Advanced installation options
 
-#### Option 2
+##### Option 1 - Using gitfs_remotes 
+
+Install the [Datadog formula][6] in the base environment of your Salt master node, using the `gitfs_remotes` option in your Salt master configuration file (defaults to `/etc/salt/master`):
+
+```text
+fileserver_backend:
+  - roots # Active by default, necessary to be able to use the local salt files we define in the next steps
+  - gitfs # Adds gitfs as a fileserver backend to be able to use gitfs_remotes
+gitfs_remotes:
+  - https://github.com/DataDog/datadog-formula.git:
+    - saltenv:
+      - base:
+        - ref: 3.0 # Pin the version of the formula you want to use
+```
+
+Then restart your Salt Master service to apply the configuration changes:
+
+```shell
+systemctl restart salt-master
+# OR
+service salt-master restart
+```
+
+##### Option 2 - Adding it to file_roots
 
 Alternatively, clone the Datadog formula on your Salt master node:
 
@@ -194,3 +219,5 @@ Salt formulas are pre-written Salt states. The following states are available in
 [4]: https://github.com/DataDog/datadog-formula/blob/master/pillar.example
 [5]: https://docs.saltstack.com/en/latest/ref/configuration/master.html#pillar-merge-lists
 [6]: https://github.com/DataDog/datadog-formula
+[7]: https://app.datadoghq.com/fleet/install-agent/latest?platform=saltstack
+[8]: https://raw.githubusercontent.com/DataDog/documentation/024004f1bec41f131accf10a688c8f58ce3f9b3a/static/images/agent/basic_agent_usage/saltstack_install_page.png
