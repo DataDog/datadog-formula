@@ -11,8 +11,6 @@ The Datadog SaltStack formula only supports installs on Debian-based and RedHat-
 ### Installation
 Follow the [in‑app installation guide in Fleet Automation][7] to select your required settings, copy the generated pillar snippet, add it to your Salt pillar file, and run your usual Salt state to deploy the Datadog Agent. For advanced options, including managing Agent upgrades, enabling Agent integrations, additional feature toggles and troubleshooting see the [Advanced configurations section](#advanced-installation-options). 
 
-![Saltstack Agent installation page][8]
-
 #### Advanced installation options
 
 ##### Option 1 - Using gitfs_remotes 
@@ -220,4 +218,3 @@ Salt formulas are pre-written Salt states. The following states are available in
 [5]: https://docs.saltstack.com/en/latest/ref/configuration/master.html#pillar-merge-lists
 [6]: https://github.com/DataDog/datadog-formula
 [7]: https://app.datadoghq.com/fleet/install-agent/latest?platform=saltstack
-[8]: https://raw.githubusercontent.com/DataDog/documentation/024004f1bec41f131accf10a688c8f58ce3f9b3a/static/images/agent/basic_agent_usage/saltstack_install_page.png
