@@ -215,6 +215,6 @@ Salt formulas are pre-written Salt states. The following states are available in
 [2]: https://app.datadoghq.com/organization-settings/api-keys
 [3]: https://docs.datadoghq.com/integrations/directory/
 [4]: https://github.com/DataDog/datadog-formula/blob/master/pillar.example
-[5]: https://docs.saltstack.com/en/latest/ref/configuration/master.html#pillar-merge-lists
+[5]: https://docs.saltproject.io/en/latest/ref/configuration/master.html#pillar-merge-lists
 [6]: https://github.com/DataDog/datadog-formula
 [7]: https://app.datadoghq.com/fleet/install-agent/latest?platform=saltstack
