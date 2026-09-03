@@ -1,0 +1,8 @@
+# This formula is rendered by Salt on Linux hosts, where stray carriage
+# returns break YAML and Jinja parsing. Normalize every text file to LF
+# in the repository and in the working tree, so contributors on Windows
+# (where git core.autocrlf defaults to true) cannot introduce CRLF.
+* text=auto eol=lf
+
+# Shell scripts must be LF to run on Linux.
+*.sh text eol=lf
